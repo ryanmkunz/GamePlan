@@ -1,4 +1,4 @@
-namespace GamePlanService.Migrations
+namespace GamePlanService2.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -13,6 +13,8 @@ namespace GamePlanService.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Description = c.String(),
+                        Lat = c.Double(nullable: false),
+                        Lng = c.Double(nullable: false),
                         Date = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id);
