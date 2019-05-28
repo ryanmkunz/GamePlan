@@ -61,7 +61,7 @@ namespace GamePlan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [Email Notification}.
+        ///   Looks up a localized string similar to [Email Notification].
         /// </summary>
         public static string EMAIL_SUBJECT_DEFAULT {
             get {

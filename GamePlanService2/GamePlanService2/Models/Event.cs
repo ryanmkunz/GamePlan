@@ -13,6 +13,7 @@ namespace GamePlanService2.Models
         public string Description { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
+        public bool EmailNotification { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]

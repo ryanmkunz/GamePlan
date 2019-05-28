@@ -15,6 +15,7 @@ namespace GamePlanService2.Migrations
                         Description = c.String(),
                         Lat = c.Double(nullable: false),
                         Lng = c.Double(nullable: false),
+                        EmailNotification = c.Boolean(nullable: false),
                         Date = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id);

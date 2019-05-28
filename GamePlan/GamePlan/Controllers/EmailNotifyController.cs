@@ -8,11 +8,17 @@ using System.Net.Mail;
 using System.Resources;
 using System.Net;
 using GamePlan.Models;
+using Microsoft.AspNet.Identity;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace GamePlan.Controllers
 {
     public class EmailNotifyController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         #region Index view method.  
 
         #region Get: /EmailNotify/Index method.  
@@ -50,14 +56,28 @@ namespace GamePlan.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(EmailNotifyViewModel model)
         {
+            EmailNotifyViewModel model2 = new EmailNotifyViewModel { ToEmail = User.Identity.GetUserName() };
+            
+
             try
             {
                 // Verification  
                 if (ModelState.IsValid)
                 {
+                    var allEvents = await GetUserEvents();
+                    var eventsWithReminders = allEvents.Where(e => e.EmailNotification == true).ToList();
+
+                    
+
+                    string sampleReminder = "sample event";
                     // Initialization.  
-                    string emailMsg = "Dear " + model.ToEmail + ", <br /><br /> Thist is test <b style='color: red'> Notification </b> <br /><br /> Thanks & Regards, <br />Ryan Kunz";
-                    string emailSubject = EmailInfo.EMAIL_SUBJECT_DEFAULT + " Test";
+                    string emailMsg = "Dear " + model.ToEmail + ", <br /><br /> Thist is test <b style='color: red'> "+sampleReminder+" </b> <br /><br /> Thanks & Regards, <br />Ryan Kunz";
+                    string emailSubject = EmailInfo.EMAIL_SUBJECT_DEFAULT + " Reminder";
+
+                    foreach (var item in eventsWithReminders)
+                    {
+                        emailMsg += (item.Description.ToString());
+                    }
 
                     // Sending Email.  
                     await this.SendEmailAsync(model.ToEmail, emailMsg, emailSubject);
@@ -80,6 +100,22 @@ namespace GamePlan.Controllers
             return this.Json(new { EnableError = true, ErrorTitle = "Error", ErrorMsg = "Something goes wrong, please try again later" });
         }
 
+        public async Task<List<Event>> GetUserEvents()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync("api/Events");
+                response.EnsureSuccessStatusCode();
+                string data = await response.Content.ReadAsStringAsync();
+                var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+
+                return jsonResults;
+            }
+        }
         #endregion
 
         #endregion

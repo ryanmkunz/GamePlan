@@ -15,6 +15,7 @@ namespace GamePlan.Migrations
                         Description = c.String(),
                         Lat = c.Double(nullable: false),
                         Lng = c.Double(nullable: false),
+                        EmailNotification = c.Boolean(nullable: false),
                         Date = c.DateTime(),
                         ToDoList_Id = c.Int(),
                     })
