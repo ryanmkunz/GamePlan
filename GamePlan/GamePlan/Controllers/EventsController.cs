@@ -50,18 +50,39 @@ namespace GamePlan.Controllers
                 }
             }
         }
-        public ActionResult Map(int? id)
+        public async Task<ActionResult> Map(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
-            if (@event == null)
+            //---------------------------------------------------------------
+            using (HttpClient client = new HttpClient())
             {
-                return HttpNotFound();
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/Events");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+                    var singleEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
+                    return View("Map", singleEvent);
+                }
+                catch (Exception e)
+                {
+                    return View("Home");
+                }
             }
-            return View(@event);
+            //---------------------------------------------------------------
+            //Event @event = db.Events.Find(id);
+            //if (@event == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(@event);
         }
 
         // GET: Events/Details/5
@@ -89,15 +110,13 @@ namespace GamePlan.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(Event @event)
+        public async Task<ActionResult> Create(Event @event)
         {
             using (var client = new HttpClient())
             {
-                //client.BaseAddress = new Uri("http://localhost:49757/api/Events");
-                //var newEvent = JsonConvert.SerializeObject(@event);
                 var stringContent = new StringContent(JsonConvert.SerializeObject(@event), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("http://localhost:49757/api/Events", stringContent);
-                //Either figure out how to send a view model to the api *OR* modify api post method to accept json
+
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("AllEvents");

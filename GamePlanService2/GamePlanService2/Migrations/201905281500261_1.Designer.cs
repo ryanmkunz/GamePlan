@@ -13,7 +13,7 @@ namespace GamePlanService2.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201905272057246_1"; }
+            get { return "201905281500261_1"; }
         }
         
         string IMigrationMetadata.Source
