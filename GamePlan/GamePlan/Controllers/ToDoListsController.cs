@@ -18,6 +18,10 @@ namespace GamePlan.Controllers
         public ActionResult Index()
         {
             return View("MainPage",db.ToDoLists.ToList());
+            //query the todolists from db
+            //query to events seperately 
+            //iterate over todo lists and idk append? related events to it
+            //then return that new object
         }
 
         // GET: ToDoLists/Details/5

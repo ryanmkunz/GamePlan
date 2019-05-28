@@ -128,8 +128,6 @@ namespace GamePlan.Controllers
 
             }
 
-
-
             //if (ModelState.IsValid)
             //{
             //    db.Events.Add(@event);

@@ -18,8 +18,7 @@ namespace GamePlan.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? Date { get; set; }
-
-
+     
         //[ForeignKey("ToDoList")]
         //public int ToDoListId { get; set; }
         //public virtual ToDoList ToDoList { get; set; }
