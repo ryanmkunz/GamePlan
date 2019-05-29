@@ -67,24 +67,24 @@ namespace GamePlan.Controllers
                     var allEvents = await GetUserEvents();
                     var eventsWithReminders = allEvents.Where(e => e.EmailNotification == true).ToList();
 
-                    
-
-                    string sampleReminder = "sample event";
                     // Initialization.  
-                    string emailMsg = "Dear " + model.ToEmail + ", <br /><br /> Thist is test <b style='color: red'> "+sampleReminder+" </b> <br /><br /> Thanks & Regards, <br />Ryan Kunz";
+                    string emailMsg = "Dear " + model2.ToEmail + ", <br /><br /> Here is your daily schedule<br><br />";
+
+
                     string emailSubject = EmailInfo.EMAIL_SUBJECT_DEFAULT + " Reminder";
 
                     foreach (var item in eventsWithReminders)
                     {
-                        emailMsg += (item.Description.ToString());
+                        emailMsg += item.Description.ToString();
+                        emailMsg += "<br><br />";
                     }
 
                     // Sending Email.  
-                    await this.SendEmailAsync(model.ToEmail, emailMsg, emailSubject);
+                    await this.SendEmailAsync(model2.ToEmail, emailMsg, emailSubject);
 
 
                     // Info.  
-                    return this.Json(new { EnableSuccess = true, SuccessTitle = "Success", SuccessMsg = "Notification has been sent successfully! to '" + model.ToEmail + "' Check your email." });
+                    return this.Json(new { EnableSuccess = true, SuccessTitle = "Success", SuccessMsg = "Notification has been sent successfully! to '" + model2.ToEmail + "' Check your email." });
                 }
             }
             catch (Exception ex)

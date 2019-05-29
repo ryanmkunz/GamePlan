@@ -187,9 +187,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905281644235_1.cs" />
-    <Compile Include="Migrations\201905281644235_1.Designer.cs">
-      <DependentUpon>201905281644235_1.cs</DependentUpon>
+    <Compile Include="Migrations\201905291706332_1.cs" />
+    <Compile Include="Migrations\201905291706332_1.Designer.cs">
+      <DependentUpon>201905291706332_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905291905536_2.cs" />
+    <Compile Include="Migrations\201905291905536_2.Designer.cs">
+      <DependentUpon>201905291905536_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -259,25 +263,25 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\ToDoList.cshtml" />
-    <Content Include="Views\ToDoLists\Create.cshtml" />
-    <Content Include="Views\ToDoLists\Delete.cshtml" />
-    <Content Include="Views\ToDoLists\Details.cshtml" />
-    <Content Include="Views\ToDoLists\Edit.cshtml" />
-    <Content Include="Views\ToDoLists\Index.cshtml" />
     <Content Include="Views\ToDoLists\MainPage.cshtml" />
-    <Content Include="Views\Events\Map.cshtml" />
+    <Content Include="Views\Home\Map.cshtml" />
     <Content Include="Views\Home\Weather.cshtml" />
+    <Content Include="Views\Home\Email.cshtml" />
+    <Content Include="Views\EmailNotify\Index.cshtml" />
     <Content Include="Views\Events\Create.cshtml" />
     <Content Include="Views\Events\Delete.cshtml" />
     <Content Include="Views\Events\Details.cshtml" />
     <Content Include="Views\Events\Edit.cshtml" />
     <Content Include="Views\Events\Index.cshtml" />
-    <Content Include="Views\Home\Email.cshtml" />
-    <Content Include="Views\EmailNotify\Index.cshtml" />
+    <Content Include="Views\ToDoLists\Create.cshtml" />
+    <Content Include="Views\ToDoLists\Delete.cshtml" />
+    <Content Include="Views\ToDoLists\Details.cshtml" />
+    <Content Include="Views\ToDoLists\Edit.cshtml" />
+    <Content Include="Views\ToDoLists\Index.cshtml" />
+    <Content Include="Views\Events\Invites.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Event\" />
     <Folder Include="Views\ToDoList\" />
   </ItemGroup>
   <ItemGroup>
@@ -298,8 +302,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905281644235_1.resx">
-      <DependentUpon>201905281644235_1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905291706332_1.resx">
+      <DependentUpon>201905291706332_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905291905536_2.resx">
+      <DependentUpon>201905291905536_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

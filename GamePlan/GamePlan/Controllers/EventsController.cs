@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GamePlan.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace GamePlan.Controllers
@@ -20,15 +19,7 @@ namespace GamePlan.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Events
-        public ActionResult Index()
-        {
-
-            return View(db.Events.ToList());
-
-            
-        }
-
-        public async Task<ActionResult> AllEvents()
+        public async Task<ActionResult> Index()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -50,13 +41,9 @@ namespace GamePlan.Controllers
                 }
             }
         }
-        public async Task<ActionResult> Map(int? id)
+
+        public async Task<ActionResult> Invites()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            //---------------------------------------------------------------
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:49757/");
@@ -68,31 +55,25 @@ namespace GamePlan.Controllers
                     response.EnsureSuccessStatusCode();
                     string data = await response.Content.ReadAsStringAsync();
                     var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-                    var singleEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
-                    return View("Map", singleEvent);
+                    var invites = jsonResults.Where(e => e.Invite == User.Identity.Name).ToList();
+
+                    return View("Invites", invites);
                 }
                 catch (Exception e)
                 {
                     return View("Home");
                 }
             }
-            //---------------------------------------------------------------
-            //Event @event = db.Events.Find(id);
-            //if (@event == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(@event);
         }
 
         // GET: Events/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = await db.Events.FindAsync(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -110,43 +91,27 @@ namespace GamePlan.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult> Create(Event @event)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
         {
-            using (var client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                var stringContent = new StringContent(JsonConvert.SerializeObject(@event), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("http://localhost:49757/api/Events", stringContent);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("AllEvents");
-                }
-                else
-                {
-                    return RedirectToAction("Create");
-                }
-
+                db.Events.Add(@event);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    db.Events.Add(@event);
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-
-            //return View(@event);
-            //public ActionResult Create([Bind(Include = "Id,Description,Lat,Lng,Date")] Event @event)
+            return View(@event);
         }
 
         // GET: Events/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = await db.Events.FindAsync(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -159,25 +124,25 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Lat,Lng,Date")] Event @event)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(@event).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(@event);
         }
 
         // GET: Events/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = await db.Events.FindAsync(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -188,11 +153,11 @@ namespace GamePlan.Controllers
         // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Event @event = db.Events.Find(id);
+            Event @event = await db.Events.FindAsync(id);
             db.Events.Remove(@event);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 

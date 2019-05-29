@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<GamePlan.Models.Event>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Invites";
 }
 
-<h2>Index</h2>
+<h2>Invites</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -25,6 +25,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EmailNotification)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Invite)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -48,6 +51,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EmailNotification)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Invite)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)

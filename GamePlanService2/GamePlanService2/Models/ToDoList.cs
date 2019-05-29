@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace GamePlan.Models
+namespace GamePlanService2.Models
 {
     public class ToDoList
     {

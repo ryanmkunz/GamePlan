@@ -22,6 +22,7 @@ namespace GamePlanService2.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Event> Events { get; set; }
+        public DbSet<ToDoList> ToDoLists { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

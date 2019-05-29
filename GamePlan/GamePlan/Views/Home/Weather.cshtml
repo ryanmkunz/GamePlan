@@ -12,6 +12,7 @@
     <body>
 
         <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
+        <p id="summary"></p>
         <p id="temp"></p>
 
 
@@ -39,6 +40,7 @@
             }
 
             function displayWeather(object) {
+                document.getElementById("summary").innerHTML = object.currently.summary;
                 document.getElementById("temp").innerHTML = object.currently.temperature + " degrees F";
 
             }

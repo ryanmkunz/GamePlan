@@ -12,6 +12,7 @@ namespace GamePlan.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Category = c.String(),
                         Description = c.String(),
                         Lat = c.Double(nullable: false),
                         Lng = c.Double(nullable: false),
@@ -52,6 +53,7 @@ namespace GamePlan.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Title = c.String(),
+                        Category = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

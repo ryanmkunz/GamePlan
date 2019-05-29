@@ -12,6 +12,7 @@
     <script src="~/Scripts/jquery-3.3.1.js"></script>
 </head>
 <body>
+
     <div id="toDoList"></div>
 
     <table class="table">
@@ -35,21 +36,21 @@
 
 
     <script type="text/javascript">
-    @*$(document).ready(function () {
+    $(document).ready(function () {
         var json = @Html.Raw(Json.Encode(@Model));
 
 
         getCollection(json);
-    });*@
+    });
 
 	function getCollection(collection){
 		for (var i = 0; i <= collection.length - 1; i++) {
 			createCard(i,collection[i].Title);
             var events = collection[i].Events;
 			for (var j = 0; j <= events.length - 1; j++) {
-				createListItem(i,j,events[j]);
+                createListItem(i, j, events[j].Description);
 			}
-			createListItem(i,j,events[j],true);
+            createListItem(i, j, (events[j]), true);
 		}
 	}
 

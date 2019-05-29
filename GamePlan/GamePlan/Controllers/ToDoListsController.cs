@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GamePlan.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace GamePlan.Controllers
 {
@@ -15,23 +19,74 @@ namespace GamePlan.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ToDoLists
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View("MainPage",db.ToDoLists.ToList());
-            //query the todolists from db
-            //query to events seperately 
-            //iterate over todo lists and idk append? related events to it
-            //then return that new object
+            //return View(await db.ToDoLists.ToListAsync());
+            var lists = await AllLists();
+            var events = await AllEvents();
+
+            foreach (var item in lists)
+            {
+                var listEvents = events.Where(e => e.Category == item.Category).ToList();
+                item.Events = listEvents;
+            }
+            return View("MainPage", lists);
+        }
+
+        public async Task<List<ToDoList>> AllLists()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/ToDoLists");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<ToDoList>>(data).ToList();
+
+                    return jsonResults;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<Event>> AllEvents()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/Events");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+
+                    return jsonResults;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
         }
 
         // GET: ToDoLists/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDoList toDoList = db.ToDoLists.Find(id);
+            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
             if (toDoList == null)
             {
                 return HttpNotFound();
@@ -50,12 +105,12 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title")] ToDoList toDoList)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Category")] ToDoList toDoList)
         {
             if (ModelState.IsValid)
             {
                 db.ToDoLists.Add(toDoList);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -63,13 +118,13 @@ namespace GamePlan.Controllers
         }
 
         // GET: ToDoLists/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDoList toDoList = db.ToDoLists.Find(id);
+            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
             if (toDoList == null)
             {
                 return HttpNotFound();
@@ -82,25 +137,25 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title")] ToDoList toDoList)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Category")] ToDoList toDoList)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(toDoList).State = EntityState.Modified;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(toDoList);
         }
 
         // GET: ToDoLists/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDoList toDoList = db.ToDoLists.Find(id);
+            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
             if (toDoList == null)
             {
                 return HttpNotFound();
@@ -111,11 +166,11 @@ namespace GamePlan.Controllers
         // POST: ToDoLists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            ToDoList toDoList = db.ToDoLists.Find(id);
+            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
             db.ToDoLists.Remove(toDoList);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
