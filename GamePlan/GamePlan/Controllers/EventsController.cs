@@ -42,6 +42,41 @@ namespace GamePlan.Controllers
             }
         }
 
+        public async Task<ActionResult> Map(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //---------------------------------------------------------------
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/Events");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+                    var singleEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
+                    return View("Map", singleEvent);
+                }
+                catch (Exception e)
+                {
+                    return View("Home");
+                }
+            }
+            //---------------------------------------------------------------
+            //Event @event = db.Events.Find(id);
+            //if (@event == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(@event);
+        }
+
         public async Task<ActionResult> Invites()
         {
             using (HttpClient client = new HttpClient())

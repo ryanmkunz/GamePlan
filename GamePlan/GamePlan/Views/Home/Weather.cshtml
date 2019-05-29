@@ -9,42 +9,47 @@
     <link href="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCpotDAS6JNDvoSkQbaGpVcVz1Jh9iwISI" />
     <script src="~/Scripts/jquery-3.3.1.js"></script>
 </head>
-    <body>
+<body>
 
-        <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
-        <p id="summary"></p>
-        <p id="temp"></p>
+    <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
+    <p>Today</p>
+    <p id="summary1"></p>
+    <p id="temp1"></p>
+    <p>Tomorrow</p>
+    <p id="summary2"></p>
+    <p id="temp2"></p>
 
 
-        <script type="text/javascript">
-            var getWeather = function () {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var lat = position.coords.latitude;
-                        var long = position.coords.longitude;
-                        showWeather(lat, long)
-                    })
-                }
-                else {
-                    window.alert("Could not get location");
-                }
+    <script type="text/javascript">
+        var getWeather = function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+                    showWeather(lat, long)
+                })
             }
-
-            function showWeather(lat, long) {
-                var url = `https://api.darksky.net/forecast/f672ff13193bfcc40427a678ebfdbc71/${lat},${long}` + `?format=jsonp&callback=displayWeather`;
-                var script = document.createElement("script");
-                script.type = "text/javascript";
-                script.src = url;
-                document.getElementsByTagName("head")[0].appendChild(script);
-                displayWeather(object)
+            else {
+                window.alert("Could not get location");
             }
+        }
 
-            function displayWeather(object) {
-                document.getElementById("summary").innerHTML = object.currently.summary;
-                document.getElementById("temp").innerHTML = object.currently.temperature + " degrees F";
+        function showWeather(lat, long) {
+            var url = `https://api.darksky.net/forecast/f672ff13193bfcc40427a678ebfdbc71/${lat},${long}` + `?format=jsonp&callback=displayWeather`;
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+            displayWeather(object)
+        }
 
-            }
-          
-        </script>
-    </body>
+        function displayWeather(object) {
+            document.getElementById("summary1").innerHTML = object.daily.data[1].summary;
+            document.getElementById("summary2").innerHTML = object.daily.data[2].summary;
+            document.getElementById("temp1").innerHTML = object.daily.data[1].temperatureHigh + " degrees F";
+            document.getElementById("temp2").innerHTML = object.daily.data[2].temperatureHigh + " degrees F";
+        }
+
+    </script>
+</body>
 </html>

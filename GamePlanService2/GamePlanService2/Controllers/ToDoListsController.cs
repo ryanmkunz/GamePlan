@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using GamePlanService2.Models;
 
 namespace GamePlanService2.Controllers
 {
+    [EnableCors(origins: "http://localhost:49757/", headers: "*", methods: "*")]
     public class ToDoListsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -264,7 +264,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\ToDoList.cshtml" />
     <Content Include="Views\ToDoLists\MainPage.cshtml" />
-    <Content Include="Views\Home\Map.cshtml" />
+    <Content Include="Views\Events\Map.cshtml" />
     <Content Include="Views\Home\Weather.cshtml" />
     <Content Include="Views\Home\Email.cshtml" />
     <Content Include="Views\EmailNotify\Index.cshtml" />

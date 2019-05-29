@@ -10,6 +10,16 @@
     <meta name="viewport" content="width=device-width" />
     <title>MainPage</title>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<style>
+    .card {
+        background-color: goldenrod;
+
+    }
+
+
+</style>
+
 </head>
 <body>
 
@@ -35,7 +45,7 @@
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
         var json = @Html.Raw(Json.Encode(@Model));
 
@@ -64,21 +74,38 @@
 	}
 
 	function createListItem(cardNum, eventNum, content, newEventField = false){
-		var innerText = content;
 		var formId = "toDoListForm" + cardNum;
 		var eventId = "toDoListItem" + cardNum + eventNum;
 		if (!newEventField) {
 			var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>'+content+'</span><br>';
 			document.getElementById(formId).innerHTML += toDoListItem;
 		}
-		else	{
+        else {
 			var textBoxId = "newEventTextBoxfor" + cardNum;
 			var newEventSubmitId = "newEventSubmit" + cardNum;
-			var newEventTextBox = '<input type="text" id="' + textBoxId + '" value="Add"><span><input type="button" id="'+newEventSubmitId+'" value="Submit"></span>';
-			document.getElementById(formId).innerHTML += newEventTextBox;
+            var newEventTextBox = '<input type="text" id="' + textBoxId + '" value="Add"><span><input type="button" id="' + newEventSubmitId + '" value="Submit"></span>';            
+            document.getElementById(formId).innerHTML += newEventTextBox;
+            $("#" + newEventSubmitId + "").on('click', function () {
+                var newEvent = {
+                    Description: $("#" + textBoxId + "").val(),
+                    Category: "sample"
+                };
+                createEvent(newEvent);
+            });            
 		}
-	}
+    }
 
-    </script>
+    function createEvent(newEvent) {
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(newEvent),
+            url: "http://localhost:49757/api/Events",
+            contentType: "application/json"
+        }).done(function (res) {
+            console.log('res', res);
+            });
+    }
+
+</script>
 </body>
 </html>
