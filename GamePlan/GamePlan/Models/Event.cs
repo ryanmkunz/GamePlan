@@ -17,6 +17,7 @@ namespace GamePlan.Models
         public double Lng { get; set; }
         public bool EmailNotification { get; set; }
         public string Invite { get; set; }
+        public double Temp { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]

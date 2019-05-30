@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<GamePlan.Models.ToDoList>
 @{
     Layout = null;
+
 }
 
 <!DOCTYPE html>
@@ -57,10 +58,10 @@
 		for (var i = 0; i <= collection.length - 1; i++) {
 			createCard(i,collection[i].Title);
             var events = collection[i].Events;
-			for (var j = 0; j <= events.length - 1; j++) {
-                createListItem(i, j, events[j].Description);
+            for (var j = 0; j <= events.length - 1; j++) {
+                createListItem(i, j, events[j].Description, events[j].Id);
 			}
-            createListItem(i, j, (events[j]), true);
+            createTextBox(i, events[0].Category);
 		}
 	}
 
@@ -73,30 +74,28 @@
 		document.getElementById(cardId).innerHTML += toDoListForm;
 	}
 
-	function createListItem(cardNum, eventNum, content, newEventField = false){
+	function createListItem(cardNum, eventNum, content, objectId){
 		var formId = "toDoListForm" + cardNum;
-		var eventId = "toDoListItem" + cardNum + eventNum;
-        if (!newEventField) {
-            //var someActionLink = '<a href="/Events/Map/' + eventObjectId + '">Map</a>';
-            //var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + someActionLink + '</span><br>';
-            //document.getElementById(formId).innerHTML += toDoListItem;
+        var eventId = "toDoListItem" + cardNum + eventNum;
+        var mapActionLink = '<a href="/Events/Map/' + objectId + '">Map</a>';
+        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + objectId + '">Email</a>';
+        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink+ '</span><br>';
+        document.getElementById(formId).innerHTML += toDoListItem;
+    }
 
-            var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + '</span><br>';
-			document.getElementById(formId).innerHTML += toDoListItem;
-		}
-        else {
-			var textBoxId = "newEventTextBoxfor" + cardNum;
-			var newEventSubmitId = "newEventSubmit" + cardNum;
-            var newEventTextBox = '<input type="text" id="' + textBoxId + '" value="Add"><span><input type="button" id="' + newEventSubmitId + '" value="Submit"></span>';            
-            document.getElementById(formId).innerHTML += newEventTextBox;
-            $("#" + newEventSubmitId + "").on('click', function () {
-                var newEvent = {
-                    Description: $("#" + textBoxId + "").val(),
-                    Category: "Sample"
-                };
-                createEvent(newEvent);
-            });            
-		}
+    function createTextBox(cardNum, category) {
+        var formId = "toDoListForm" + cardNum;
+        var textBoxId = "newEventTextBoxfor" + cardNum;
+        var newEventSubmitId = "newEventSubmit" + cardNum;
+        var newEventTextBox = '<input type="text" id="' + textBoxId + '" value="Add"><span><input type="button" id="' + newEventSubmitId + '" value="Submit"></span>';
+        document.getElementById(formId).innerHTML += newEventTextBox;
+        $("#" + newEventSubmitId + "").on('click', function () {
+            var newEvent = {
+                Description: $("#" + textBoxId + "").val(),
+                Category: category
+            };
+            createEvent(newEvent);
+        });
     }
 
     function createEvent(newEvent) {

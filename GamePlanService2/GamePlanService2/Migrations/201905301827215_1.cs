@@ -18,6 +18,7 @@ namespace GamePlanService2.Migrations
                         Lng = c.Double(nullable: false),
                         EmailNotification = c.Boolean(nullable: false),
                         Invite = c.String(),
+                        Temp = c.Double(nullable: false),
                         Date = c.DateTime(),
                         ToDoList_Id = c.Int(),
                     })

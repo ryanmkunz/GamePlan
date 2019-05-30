@@ -187,9 +187,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905301443070_1.cs" />
-    <Compile Include="Migrations\201905301443070_1.Designer.cs">
-      <DependentUpon>201905301443070_1.cs</DependentUpon>
+    <Compile Include="Migrations\201905301827445_1.cs" />
+    <Compile Include="Migrations\201905301827445_1.Designer.cs">
+      <DependentUpon>201905301827445_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -275,6 +275,7 @@
     <Content Include="Views\ToDoLists\Edit.cshtml" />
     <Content Include="Views\ToDoLists\Index.cshtml" />
     <Content Include="Views\Events\Invites.cshtml" />
+    <Content Include="Views\Events\Recommended.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -297,8 +298,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905301443070_1.resx">
-      <DependentUpon>201905301443070_1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905301827445_1.resx">
+      <DependentUpon>201905301827445_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

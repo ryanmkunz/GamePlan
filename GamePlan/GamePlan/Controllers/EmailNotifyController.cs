@@ -123,6 +123,19 @@ namespace GamePlan.Controllers
         #region Helper  
 
         #region Send Email method.  
+        
+        public async Task<Event> GetSingleEvent(int? id)
+        {
+            var allEvents = await GetUserEvents();
+            return allEvents.Where(e => e.Id == id).SingleOrDefault();
+        }
+
+        public async Task<bool> SendReminder(int? id)
+        {
+            var selectedEvent = await GetSingleEvent(id);
+            var sent = await SendEmailAsync(User.Identity.GetUserName(), selectedEvent.Description, "Reminder");
+            return sent;
+        }
 
         // <summary>  
         //  Send Email method.  
