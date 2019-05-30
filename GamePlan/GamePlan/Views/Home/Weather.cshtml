@@ -50,7 +50,7 @@
         </lr>
 
     </ul>
-
+    @Html.ActionLink("Get recommendations", "Recommended", "Events", new { currentTemp = 65 }, null)
 
     <script type="text/javascript">
         var getWeather = function () {
@@ -81,12 +81,6 @@
                 $("#summaryDay" + i + "").append(object.daily.data[i].summary);
                 $("#tempDay" + i + "").append("  HighTemp: " + object.daily.data[i].temperatureHigh + " degrees F");
             }
-
-
-            //document.getElementById("summary1").innerHTML = object.daily.data[1].summary;
-            //document.getElementById("summary2").innerHTML = object.daily.data[2].summary;
-            //document.getElementById("temp1").innerHTML = object.daily.data[1].temperatureHigh + " degrees F";
-            //document.getElementById("temp2").innerHTML = object.daily.data[2].temperatureHigh + " degrees F";
         }
 
     </script>

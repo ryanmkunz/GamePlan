@@ -101,6 +101,39 @@ namespace GamePlan.Controllers
             }
         }
 
+        public async Task<ActionResult> Recommended(double? currentTemp)
+        {
+            var allEvents = await AllEvents();
+            var filteredByWeekDay = allEvents.Where(e => e.Date.Value.DayOfWeek == DateTime.Today.DayOfWeek).ToList();
+            var filteredByWeather = allEvents.Where(e => e.Temp >= currentTemp).ToList();
+            var recommended = filteredByWeather;
+            recommended.AddRange(filteredByWeekDay);
+            return View(recommended);
+        }
+
+        public async Task<IEnumerable<Event>> AllEvents()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/Events");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+
+                    return jsonResults;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
         // GET: Events/Details/5
         public async Task<ActionResult> Details(int? id)
         {

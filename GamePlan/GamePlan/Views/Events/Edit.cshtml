@@ -69,11 +69,30 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="NewSave" id="submitBtn" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back", "Index","ToDoLists")
 </div>
+<script>
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            editEvent(model.id, model);
+        })
+    });
+
+    function editEvent(id, model) {
+        $.ajax({
+            url: "http://localhost:49757/api/Events",
+            type: 'PUT',
+            data: "id=" + id + "&event=" + model + "",
+            success: function (data) {
+                alert("Success");
+            }
+        });
+    }
+</script>

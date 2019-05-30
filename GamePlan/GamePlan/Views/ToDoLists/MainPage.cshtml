@@ -79,7 +79,8 @@
         var eventId = "toDoListItem" + cardNum + eventNum;
         var mapActionLink = '<a href="/Events/Map/' + objectId + '">Map</a>';
         var emailActionLink = '<a href="/EmailNotify/SendReminder/' + objectId + '">Email</a>';
-        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink+ '</span><br>';
+        var editActionLink = '<a href="/Events/Edit/' + objectId + '">Edit</a>';
+        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink + editActionLink + '</span><br>';
         document.getElementById(formId).innerHTML += toDoListItem;
     }
 
@@ -101,7 +102,6 @@
     function createEvent(newEvent) {
         $.ajax({
             type: "POST",
-            //crossDomain: true,
             data: JSON.stringify(newEvent),
             url: "http://localhost:49757/api/Events",
             contentType: "application/json"
@@ -109,6 +109,8 @@
             console.log('res', res);
             });
     }
+
+    
 
 </script>
 </body>
