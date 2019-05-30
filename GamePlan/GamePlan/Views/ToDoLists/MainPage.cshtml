@@ -58,7 +58,7 @@
 			createCard(i,collection[i].Title);
             var events = collection[i].Events;
 			for (var j = 0; j <= events.length - 1; j++) {
-                createListItem(i, j, events[j].Description, events[j].Id);
+                createListItem(i, j, events[j].Description);
 			}
             createListItem(i, j, (events[j]), true);
 		}
@@ -73,14 +73,15 @@
 		document.getElementById(cardId).innerHTML += toDoListForm;
 	}
 
-	function createListItem(cardNum, eventNum, content, eventObjectId, newEventField = false){
+	function createListItem(cardNum, eventNum, content, newEventField = false){
 		var formId = "toDoListForm" + cardNum;
 		var eventId = "toDoListItem" + cardNum + eventNum;
         if (!newEventField) {
+            //var someActionLink = '<a href="/Events/Map/' + eventObjectId + '">Map</a>';
+            //var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + someActionLink + '</span><br>';
+            //document.getElementById(formId).innerHTML += toDoListItem;
 
-
-            var someActionLink = '<a href="/Events/Map/' + eventObjectId+'">Map</a>';
-            var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + someActionLink + '</span><br>';
+            var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + '</span><br>';
 			document.getElementById(formId).innerHTML += toDoListItem;
 		}
         else {
@@ -91,7 +92,7 @@
             $("#" + newEventSubmitId + "").on('click', function () {
                 var newEvent = {
                     Description: $("#" + textBoxId + "").val(),
-                    Category: "sample"
+                    Category: "Sample"
                 };
                 createEvent(newEvent);
             });            
@@ -101,6 +102,7 @@
     function createEvent(newEvent) {
         $.ajax({
             type: "POST",
+            //crossDomain: true,
             data: JSON.stringify(newEvent),
             url: "http://localhost:49757/api/Events",
             contentType: "application/json"

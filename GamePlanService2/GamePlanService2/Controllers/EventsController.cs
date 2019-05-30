@@ -13,8 +13,9 @@ using GamePlanService2.Models;
 
 namespace GamePlanService2.Controllers
 {
-    [GamePlanService2.AllowCrossSiteAttribute]
-    [EnableCors(origins: "http://localhost:49757/api/Events", headers: "*", methods: "*")]
+
+    //[EnableCors(origins: "http://localhost:49757/api/Events", headers: "*", methods: "*")]
+    [AllowCrossSite]
     public class EventsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
