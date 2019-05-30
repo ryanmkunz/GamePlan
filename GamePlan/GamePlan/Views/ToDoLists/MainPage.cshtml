@@ -58,7 +58,7 @@
 			createCard(i,collection[i].Title);
             var events = collection[i].Events;
 			for (var j = 0; j <= events.length - 1; j++) {
-                createListItem(i, j, events[j].Description);
+                createListItem(i, j, events[j].Description, events[j].Id);
 			}
             createListItem(i, j, (events[j]), true);
 		}
@@ -73,11 +73,14 @@
 		document.getElementById(cardId).innerHTML += toDoListForm;
 	}
 
-	function createListItem(cardNum, eventNum, content, newEventField = false){
+	function createListItem(cardNum, eventNum, content, eventObjectId, newEventField = false){
 		var formId = "toDoListForm" + cardNum;
 		var eventId = "toDoListItem" + cardNum + eventNum;
-		if (!newEventField) {
-			var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>'+content+'</span><br>';
+        if (!newEventField) {
+
+
+            var someActionLink = '<a href="/Events/Map/' + eventObjectId+'">Map</a>';
+            var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + someActionLink + '</span><br>';
 			document.getElementById(formId).innerHTML += toDoListItem;
 		}
         else {

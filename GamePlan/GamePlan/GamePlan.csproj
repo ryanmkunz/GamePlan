@@ -187,13 +187,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905291706332_1.cs" />
-    <Compile Include="Migrations\201905291706332_1.Designer.cs">
-      <DependentUpon>201905291706332_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905291905536_2.cs" />
-    <Compile Include="Migrations\201905291905536_2.Designer.cs">
-      <DependentUpon>201905291905536_2.cs</DependentUpon>
+    <Compile Include="Migrations\201905301443070_1.cs" />
+    <Compile Include="Migrations\201905301443070_1.Designer.cs">
+      <DependentUpon>201905301443070_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -282,7 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ToDoList\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -302,11 +297,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905291706332_1.resx">
-      <DependentUpon>201905291706332_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905291905536_2.resx">
-      <DependentUpon>201905291905536_2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905301443070_1.resx">
+      <DependentUpon>201905301443070_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
