@@ -13,7 +13,8 @@ using GamePlanService2.Models;
 
 namespace GamePlanService2.Controllers
 {
-    [EnableCors(origins: "http://localhost:49757/", headers: "*", methods: "*")]
+    [AllowCrossSite]
+    [EnableCors(origins: "http://localhost:49757/api/ToDoLists", headers: "*", methods: "*")]
     public class ToDoListsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

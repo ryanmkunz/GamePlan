@@ -12,12 +12,44 @@
 <body>
 
     <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
-    <p>Today</p>
-    <p id="summary1"></p>
-    <p id="temp1"></p>
-    <p>Tomorrow</p>
-    <p id="summary2"></p>
-    <p id="temp2"></p>
+    <ul>
+        <lr>
+            <li><p id="weekDay1"></p></li>
+            <li><p id="summaryDay1"></p></li>
+            <li><p id="tempDay1"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay2"></p></li>
+            <li><p id="summaryDay2"></p></li>
+            <li><p id="tempDay2"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay3"></p></li>
+            <li><p id="summaryDay3"></p></li>
+            <li><p id="tempDay3"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay4"></p></li>
+            <li><p id="summaryDay4"></p></li>
+            <li><p id="tempDay4"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay5"></p></li>
+            <li><p id="summaryDay5"></p></li>
+            <li><p id="tempDay5"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay6"></p></li>
+            <li><p id="summaryDay6"></p></li>
+            <li><p id="tempDay6"></p></li>
+        </lr>
+        <lr>
+            <li><p id="weekDay7"></p></li>
+            <li><p id="summaryDay7"></p></li>
+            <li><p id="tempDay7"></p></li>
+        </lr>
+
+    </ul>
 
 
     <script type="text/javascript">
@@ -44,10 +76,17 @@
         }
 
         function displayWeather(object) {
-            document.getElementById("summary1").innerHTML = object.daily.data[1].summary;
-            document.getElementById("summary2").innerHTML = object.daily.data[2].summary;
-            document.getElementById("temp1").innerHTML = object.daily.data[1].temperatureHigh + " degrees F";
-            document.getElementById("temp2").innerHTML = object.daily.data[2].temperatureHigh + " degrees F";
+            for (var i = 1; i <= 7; i++) {
+                $("#weekDay" + i + "").append("Weekday");
+                $("#summaryDay" + i + "").append(object.daily.data[i].summary);
+                $("#tempDay" + i + "").append("  HighTemp: " + object.daily.data[i].temperatureHigh + " degrees F");
+            }
+
+
+            //document.getElementById("summary1").innerHTML = object.daily.data[1].summary;
+            //document.getElementById("summary2").innerHTML = object.daily.data[2].summary;
+            //document.getElementById("temp1").innerHTML = object.daily.data[1].temperatureHigh + " degrees F";
+            //document.getElementById("temp2").innerHTML = object.daily.data[2].temperatureHigh + " degrees F";
         }
 
     </script>
