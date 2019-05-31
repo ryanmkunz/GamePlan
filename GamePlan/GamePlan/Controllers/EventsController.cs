@@ -179,12 +179,31 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = await db.Events.FindAsync(id);
-            if (@event == null)
+            //Event @event = await db.Events.FindAsync(id);
+            //if (@event == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(@event);
+            using (HttpClient client = new HttpClient())
             {
-                return HttpNotFound();
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("api/Events");
+                    response.EnsureSuccessStatusCode();
+                    string data = await response.Content.ReadAsStringAsync();
+                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+                    var selectedEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
+                    return View(selectedEvent);
+                }
+                catch (Exception e)
+                {
+                    return View("Home");
+                }
             }
-            return View(@event);
         }
 
         // POST: Events/Edit/5
@@ -196,9 +215,18 @@ namespace GamePlan.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(@event).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+
+                //db.Entry(@event).State = EntityState.Modified;
+                //await db.SaveChangesAsync();
+                //return RedirectToAction("Index");
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:49757/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var response = await client.PutAsync("api/Events", @event).Result;
+                }
             }
             return View(@event);
         }
@@ -210,12 +238,31 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = await db.Events.FindAsync(id);
-            if (@event == null)
+            //Event @event = await db.Events.FindAsync(id);
+            //if (@event == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            using (HttpClient client = new HttpClient())
             {
-                return HttpNotFound();
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                try
+                {
+                    HttpResponseMessage response = await client.DeleteAsync("api/Events/" + id);
+                    response.EnsureSuccessStatusCode();
+                    //string data = await response.Content.ReadAsStringAsync();
+                    //var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
+                    //var selectedEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();                    
+                }
+                catch (Exception e)
+                {
+                    return View("Index");
+                }
             }
-            return View(@event);
+            return View("Index");
         }
 
         // POST: Events/Delete/5

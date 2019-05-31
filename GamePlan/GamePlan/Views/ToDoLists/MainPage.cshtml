@@ -26,22 +26,7 @@
 
     <div id="toDoList"></div>
 
-    <table class="table">
-        @*@foreach (var item in Model)
-        {
-            <th>
-                @Html.DisplayFor(modelItem => item.Title)
-
-            </th>
-                foreach (var thing in item.Events)
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => thing.Description)
-                    </td>
-                }
-        }*@
-
-    </table>
+  
 
 
 
@@ -79,8 +64,9 @@
         var eventId = "toDoListItem" + cardNum + eventNum;
         var mapActionLink = '<a href="/Events/Map/' + objectId + '">Map</a>';
         var emailActionLink = '<a href="/EmailNotify/SendReminder/' + objectId + '">Email</a>';
+        var deleteActionLink = '<a href="/Events/Delete/' + objectId + '">Delete</a>';
         var editActionLink = '<a href="/Events/Edit/' + objectId + '">Edit</a>';
-        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink + editActionLink + '</span><br>';
+        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         document.getElementById(formId).innerHTML += toDoListItem;
     }
 
