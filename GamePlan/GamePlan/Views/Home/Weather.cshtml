@@ -8,42 +8,56 @@
 <head>
     <link href="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCpotDAS6JNDvoSkQbaGpVcVz1Jh9iwISI" />
     <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<style>
+    #list li {
+        list-style-type: none;
+    }
+    #list lr {
+        padding: 15px;
+    }
+    .badge {
+        padding: 25px;
+        
+    }
+</style>
+
 </head>
 <body>
 
     <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
-    <ul>
-        <lr>
+    <ul id="list">
+        <lr class="badge">
             <li><p id="weekDay1"></p></li>
             <li><p id="summaryDay1"></p></li>
             <li><p id="tempDay1"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay2"></p></li>
             <li><p id="summaryDay2"></p></li>
             <li><p id="tempDay2"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay3"></p></li>
             <li><p id="summaryDay3"></p></li>
             <li><p id="tempDay3"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay4"></p></li>
             <li><p id="summaryDay4"></p></li>
             <li><p id="tempDay4"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay5"></p></li>
             <li><p id="summaryDay5"></p></li>
             <li><p id="tempDay5"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay6"></p></li>
             <li><p id="summaryDay6"></p></li>
             <li><p id="tempDay6"></p></li>
         </lr>
-        <lr>
+        <lr class="badge">
             <li><p id="weekDay7"></p></li>
             <li><p id="summaryDay7"></p></li>
             <li><p id="tempDay7"></p></li>

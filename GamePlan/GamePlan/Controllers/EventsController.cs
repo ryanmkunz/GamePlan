@@ -107,7 +107,7 @@ namespace GamePlan.Controllers
             var filteredByWeekDay = allEvents.Where(e => e.Date.Value.DayOfWeek == DateTime.Today.DayOfWeek).ToList();
             var filteredByWeather = allEvents.Where(e => e.Temp >= currentTemp).ToList();
             var recommended = filteredByWeather;
-            recommended.AddRange(filteredByWeekDay);
+            //recommended.AddRange(filteredByWeekDay);
             return View(recommended);
         }
 
