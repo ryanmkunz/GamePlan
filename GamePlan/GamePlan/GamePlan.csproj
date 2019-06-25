@@ -168,6 +168,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiKeyLibrary.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -187,9 +188,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905302308042_1.cs" />
-    <Compile Include="Migrations\201905302308042_1.Designer.cs">
-      <DependentUpon>201905302308042_1.cs</DependentUpon>
+    <Compile Include="Migrations\201906211827245_1.cs" />
+    <Compile Include="Migrations\201906211827245_1.Designer.cs">
+      <DependentUpon>201906211827245_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -298,8 +299,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905302308042_1.resx">
-      <DependentUpon>201905302308042_1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906211827245_1.resx">
+      <DependentUpon>201906211827245_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
