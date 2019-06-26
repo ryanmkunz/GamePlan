@@ -6,7 +6,7 @@
 <h2>Weather</h2>
 <html>
 <head>
-    <link href="https://www.googleapis.com/geolocation/v1/geolocate?key=" + @ApiKeyLibrary.DarkSkyApiKey/>
+    <link href="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAJv-wrcl6nN6ENIOTnRwAtMzTGhjQDj4w"/>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
 
 <style>
@@ -90,8 +90,23 @@
         }
 
         function displayWeather(object) {
+            var weekDay1 = "@System.DateTime.Today.DayOfWeek.ToString()";
+            var weekDay2 = "@System.DateTime.Today.AddDays(1).DayOfWeek.ToString()";
+            var weekDay3 = "@System.DateTime.Today.AddDays(2).DayOfWeek.ToString()";
+            var weekDay4 = "@System.DateTime.Today.AddDays(3).DayOfWeek.ToString()";
+            var weekDay5 = "@System.DateTime.Today.AddDays(4).DayOfWeek.ToString()";
+            var weekDay6 = "@System.DateTime.Today.AddDays(5).DayOfWeek.ToString()";
+            var weekDay7 = "@System.DateTime.Today.AddDays(6).DayOfWeek.ToString()";
+            $("#weekDay1").append(weekDay1);
+            $("#weekDay2").append(weekDay2);
+            $("#weekDay3").append(weekDay3);
+            $("#weekDay4").append(weekDay4);
+            $("#weekDay5").append(weekDay5);
+            $("#weekDay6").append(weekDay6);
+            $("#weekDay7").append(weekDay7);
+
             for (var i = 1; i <= 7; i++) {
-                $("#weekDay" + i + "").append("Weekday");
+                
                 $("#summaryDay" + i + "").append(object.daily.data[i].summary);
                 $("#tempDay" + i + "").append("  HighTemp: " + object.daily.data[i].temperatureHigh + " degrees F");
             }
