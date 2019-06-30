@@ -6,7 +6,7 @@
 <h2>Weather</h2>
 <html>
 <head>
-    <link href="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAJv-wrcl6nN6ENIOTnRwAtMzTGhjQDj4w"/>
+    <link href="@ApiKeyLibrary.GoogleGeolocationApiKey"/>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
 
 <style>
@@ -27,6 +27,11 @@
 
     <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
     <ul id="list">
+        <lr class="badge">
+            <li><p id="weekDay0"></p></li>
+            <li><p id="summaryDay0"></p></li>
+            <li><p id="tempDay0"></p></li>
+        </lr>
         <lr class="badge">
             <li><p id="weekDay1"></p></li>
             <li><p id="summaryDay1"></p></li>
@@ -81,7 +86,7 @@
         }
 
         function showWeather(lat, long) {
-            var url = `https://api.darksky.net/forecast/f672ff13193bfcc40427a678ebfdbc71/${lat},${long}` + `?format=jsonp&callback=displayWeather`;
+            var url = `https://api.darksky.net/forecast/` + `@ApiKeyLibrary.DarkSkyApiKey` + `/${lat},${long}?format=jsonp&callback=displayWeather`;
             var script = document.createElement("script");
             script.type = "text/javascript";
             script.src = url;
@@ -90,13 +95,15 @@
         }
 
         function displayWeather(object) {
-            var weekDay1 = "@System.DateTime.Today.DayOfWeek.ToString()";
-            var weekDay2 = "@System.DateTime.Today.AddDays(1).DayOfWeek.ToString()";
-            var weekDay3 = "@System.DateTime.Today.AddDays(2).DayOfWeek.ToString()";
-            var weekDay4 = "@System.DateTime.Today.AddDays(3).DayOfWeek.ToString()";
-            var weekDay5 = "@System.DateTime.Today.AddDays(4).DayOfWeek.ToString()";
-            var weekDay6 = "@System.DateTime.Today.AddDays(5).DayOfWeek.ToString()";
-            var weekDay7 = "@System.DateTime.Today.AddDays(6).DayOfWeek.ToString()";
+            var weekDay0 = "@System.DateTime.Today.DayOfWeek.ToString()";
+            var weekDay1 = "@System.DateTime.Today.AddDays(1).DayOfWeek.ToString()";
+            var weekDay2 = "@System.DateTime.Today.AddDays(2).DayOfWeek.ToString()";
+            var weekDay3 = "@System.DateTime.Today.AddDays(3).DayOfWeek.ToString()";
+            var weekDay4 = "@System.DateTime.Today.AddDays(4).DayOfWeek.ToString()";
+            var weekDay5 = "@System.DateTime.Today.AddDays(5).DayOfWeek.ToString()";
+            var weekDay6 = "@System.DateTime.Today.AddDays(6).DayOfWeek.ToString()";
+            var weekDay7 = "@System.DateTime.Today.AddDays(7).DayOfWeek.ToString()";
+            $("#weekDay0").append(weekDay0);
             $("#weekDay1").append(weekDay1);
             $("#weekDay2").append(weekDay2);
             $("#weekDay3").append(weekDay3);
@@ -105,10 +112,14 @@
             $("#weekDay6").append(weekDay6);
             $("#weekDay7").append(weekDay7);
 
-            for (var i = 1; i <= 7; i++) {                
+            for (var i = 0; i <= 7; i++) {                
                 $("#summaryDay" + i + "").append(object.daily.data[i].icon);
                 $("#tempDay" + i + "").append("  HighTemp: " + Math.round(object.daily.data[i].temperatureHigh,0) + " degrees F");
             }
+        }
+
+        function setIcons(icon, iconId) {
+            
         }
 
     </script>
