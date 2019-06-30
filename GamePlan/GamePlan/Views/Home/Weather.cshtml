@@ -8,7 +8,7 @@
 <head>
     <link href="@ApiKeyLibrary.GoogleGeolocationApiKey"/>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
-
+    <script src="~/Scripts/skycons.js"></script>
 <style>
     #list li {
         list-style-type: none;
@@ -26,44 +26,53 @@
 <body>
 
     <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
+    
     <ul id="list">
         <lr class="badge">
             <li><p id="weekDay0"></p></li>
+            <canvas id="icon0" width="64" height="64"></canvas>
             <li><p id="summaryDay0"></p></li>
             <li><p id="tempDay0"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay1"></p></li>
+            <canvas id="icon1" width="64" height="64"></canvas>
             <li><p id="summaryDay1"></p></li>
             <li><p id="tempDay1"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay2"></p></li>
+            <canvas id="icon2" width="64" height="64"></canvas>
             <li><p id="summaryDay2"></p></li>
             <li><p id="tempDay2"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay3"></p></li>
+            <canvas id="icon3" width="64" height="64"></canvas>
             <li><p id="summaryDay3"></p></li>
             <li><p id="tempDay3"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay4"></p></li>
+            <canvas id="icon4" width="64" height="64"></canvas>
             <li><p id="summaryDay4"></p></li>
             <li><p id="tempDay4"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay5"></p></li>
+            <canvas id="icon5" width="64" height="64"></canvas>
             <li><p id="summaryDay5"></p></li>
             <li><p id="tempDay5"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay6"></p></li>
+            <canvas id="icon6" width="64" height="64"></canvas>
             <li><p id="summaryDay6"></p></li>
             <li><p id="tempDay6"></p></li>
         </lr>
         <lr class="badge">
             <li><p id="weekDay7"></p></li>
+            <canvas id="icon7" width="64" height="64"></canvas>
             <li><p id="summaryDay7"></p></li>
             <li><p id="tempDay7"></p></li>
         </lr>
@@ -94,7 +103,7 @@
             displayWeather(object)
         }
 
-        function displayWeather(object) {
+        function displayWeather(object) {            
             var weekDay0 = "@System.DateTime.Today.DayOfWeek.ToString()";
             var weekDay1 = "@System.DateTime.Today.AddDays(1).DayOfWeek.ToString()";
             var weekDay2 = "@System.DateTime.Today.AddDays(2).DayOfWeek.ToString()";
@@ -112,14 +121,19 @@
             $("#weekDay6").append(weekDay6);
             $("#weekDay7").append(weekDay7);
 
-            for (var i = 0; i <= 7; i++) {                
-                $("#summaryDay" + i + "").append(object.daily.data[i].icon);
-                $("#tempDay" + i + "").append("  HighTemp: " + Math.round(object.daily.data[i].temperatureHigh,0) + " degrees F");
+            for (var i = 0; i <= 7; i++) {
+                var iconId = "icon" + i;
+                $("#summaryDay" + i + "").append(object.daily.data[i].summary);
+                $("#tempDay" + i + "").append("  HighTemp: " + Math.round(object.daily.data[i].temperatureHigh, 0) + "°F");
+                setIcons(object.daily.data[i].icon, iconId);
             }
         }
 
         function setIcons(icon, iconId) {
-            
+            const skycons = new Skycons({ color: "black" });
+            const currentIcon = icon.replace(/-/g, "_").toUpperCase();
+            skycons.play();
+            return skycons.set(iconId, Skycons[currentIcon]);
         }
 
     </script>
