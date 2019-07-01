@@ -12,73 +12,81 @@
 <style>
     #list li {
         list-style-type: none;
+        
     }
     #list lr {
         padding: 15px;
+
     }
     .badge {
         padding: 25px;
-        
+        float: left;
+        clear: left;
     }
 </style>
 
 </head>
 <body>
-
-    <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
+    <div>
+        <button id="getWeather" onclick="getWeather()">Get Current Weather!</button>
+    </div>
     
-    <ul id="list">
-        <lr class="badge">
-            <li><p id="weekDay0"></p></li>
-            <canvas id="icon0" width="64" height="64"></canvas>
-            <li><p id="summaryDay0"></p></li>
-            <li><p id="tempDay0"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay1"></p></li>
-            <canvas id="icon1" width="64" height="64"></canvas>
-            <li><p id="summaryDay1"></p></li>
-            <li><p id="tempDay1"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay2"></p></li>
-            <canvas id="icon2" width="64" height="64"></canvas>
-            <li><p id="summaryDay2"></p></li>
-            <li><p id="tempDay2"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay3"></p></li>
-            <canvas id="icon3" width="64" height="64"></canvas>
-            <li><p id="summaryDay3"></p></li>
-            <li><p id="tempDay3"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay4"></p></li>
-            <canvas id="icon4" width="64" height="64"></canvas>
-            <li><p id="summaryDay4"></p></li>
-            <li><p id="tempDay4"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay5"></p></li>
-            <canvas id="icon5" width="64" height="64"></canvas>
-            <li><p id="summaryDay5"></p></li>
-            <li><p id="tempDay5"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay6"></p></li>
-            <canvas id="icon6" width="64" height="64"></canvas>
-            <li><p id="summaryDay6"></p></li>
-            <li><p id="tempDay6"></p></li>
-        </lr>
-        <lr class="badge">
-            <li><p id="weekDay7"></p></li>
-            <canvas id="icon7" width="64" height="64"></canvas>
-            <li><p id="summaryDay7"></p></li>
-            <li><p id="tempDay7"></p></li>
-        </lr>
-
-    </ul>
-    @Html.ActionLink("Get recommendations", "Recommended", "Events", new { currentTemp = 65 }, null)
+    <div>
+        <ul id="list">
+            <lr class="badge">
+                <li><p id="weekDay0"></p></li>
+                <canvas id="icon0" width="64" height="64"></canvas>
+                <li><p id="summaryDay0"></p></li>
+                <li><p id="tempDay0"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay1"></p></li>
+                <canvas id="icon1" width="64" height="64"></canvas>
+                <li><p id="summaryDay1"></p></li>
+                <li><p id="tempDay1"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay2"></p></li>
+                <canvas id="icon2" width="64" height="64"></canvas>
+                <li><p id="summaryDay2"></p></li>
+                <li><p id="tempDay2"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay3"></p></li>
+                <canvas id="icon3" width="64" height="64"></canvas>
+                <li><p id="summaryDay3"></p></li>
+                <li><p id="tempDay3"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay4"></p></li>
+                <canvas id="icon4" width="64" height="64"></canvas>
+                <li><p id="summaryDay4"></p></li>
+                <li><p id="tempDay4"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay5"></p></li>
+                <canvas id="icon5" width="64" height="64"></canvas>
+                <li><p id="summaryDay5"></p></li>
+                <li><p id="tempDay5"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay6"></p></li>
+                <canvas id="icon6" width="64" height="64"></canvas>
+                <li><p id="summaryDay6"></p></li>
+                <li><p id="tempDay6"></p></li>
+            </lr>
+            <lr class="badge">
+                <li><p id="weekDay7"></p></li>
+                <canvas id="icon7" width="64" height="64"></canvas>
+                <li><p id="summaryDay7"></p></li>
+                <li><p id="tempDay7"></p></li>
+            </lr>
+        </ul>
+    </div>
+    <div>
+        @Html.ActionLink("Get recommendations", "Recommended", "Events", new { currentTemp = 65 }, null)
+    </div>
+    
 
     <script type="text/javascript">
         var getWeather = function () {
