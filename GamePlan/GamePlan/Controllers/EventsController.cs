@@ -98,29 +98,6 @@ namespace GamePlan.Controllers
             return View(@event);
         }
 
-        // GET: Events/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Events/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Events.Add(@event);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(@event);
-        }
-
         // GET: Events/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -141,10 +118,6 @@ namespace GamePlan.Controllers
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(@event).State = EntityState.Modified;
-                //await db.SaveChangesAsync();
-                //return RedirectToAction("Index");
-
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("http://localhost:49757/");
