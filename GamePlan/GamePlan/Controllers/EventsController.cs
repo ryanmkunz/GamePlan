@@ -141,7 +141,6 @@ namespace GamePlan.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 //db.Entry(@event).State = EntityState.Modified;
                 //await db.SaveChangesAsync();
                 //return RedirectToAction("Index");
