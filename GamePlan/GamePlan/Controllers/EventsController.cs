@@ -181,25 +181,5 @@ namespace GamePlan.Controllers
             }
             return RedirectToAction("Index", "ToDoLists");
         }
-
-        // POST: Events/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Event @event = await db.Events.FindAsync(id);
-            db.Events.Remove(@event);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
