@@ -11,6 +11,7 @@ using GamePlan.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace GamePlan.Controllers
 {
@@ -114,19 +115,27 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
+        public ActionResult Edit([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                using (HttpClient client = new HttpClient())
+                client.BaseAddress = new Uri("http://localhost:49757/api/Events");
+
+                //HTTP POST
+                var jsonString = JsonConvert.SerializeObject(@event);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var putTask = client.PutAsync("Event", content);
+                //var putTask = client.PutAsJsonAsync<Event>("Event", @event);
+                putTask.Wait();
+
+                var result = putTask.Result;
+                if (result.IsSuccessStatusCode)
                 {
-                    client.BaseAddress = new Uri("http://localhost:49757/");
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //var response = await client.PutAsync("api/Events", @event).Result;
+
+                    return View(@event);
                 }
             }
-            return View(@event);
+            return RedirectToAction("Index", "ToDoLists");
         }
 
         // GET: Events/Delete/5
