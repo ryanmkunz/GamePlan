@@ -1,8 +1,4 @@
 ﻿@model IEnumerable<GamePlan.Models.ToDoList>
-@{
-    Layout = null;
-
-}
 
 <!DOCTYPE html>
 
@@ -12,14 +8,11 @@
     <title>MainPage</title>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
 
-<style>
-    .card {
-        background-color: goldenrod;
-
-    }
-
-
-</style>
+    <style>
+        .card {
+            background-color: goldenrod;
+        }
+    </style>
 
 </head>
 <body>
@@ -45,19 +38,12 @@
             </div>
         </div>
     </div>
-    
+
     <div id="toDoList"></div>
-
-
-
-
-
 
     <script type="text/javascript">
     $(document).ready(function () {
         var json = @Html.Raw(Json.Encode(@Model));
-
-
         getCollection(json);
     });
 
@@ -75,7 +61,7 @@
 	function createCard(cardNum, cartTitle){
 		var cardId = "toDoCard" + cardNum;
 		var formId = "toDoListForm" + cardNum;
-		var card = $('<div class="card" id="' + cardId + '" style="width: 18rem;"><h5 class="card-title">'+cartTitle+'</h5></div>');
+		var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">'+cartTitle+'</h5></div>');
 		var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';
 		$('#toDoList').append(card);
 		document.getElementById(cardId).innerHTML += toDoListForm;
@@ -123,3 +109,4 @@
     </script>
 </body>
 </html>
+

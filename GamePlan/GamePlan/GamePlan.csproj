@@ -278,6 +278,7 @@
     <Content Include="Views\ToDoLists\Index.cshtml" />
     <Content Include="Views\Events\Invites.cshtml" />
     <Content Include="Views\Events\Recommended.cshtml" />
+    <Content Include="Views\ToDoLists\NewToDoList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

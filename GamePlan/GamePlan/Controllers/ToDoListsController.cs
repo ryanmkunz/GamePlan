@@ -30,7 +30,7 @@ namespace GamePlan.Controllers
                 var listEvents = events.Where(e => e.Category == item.Category).ToList();
                 item.Events = listEvents;
             }
-            return View("MainPage", lists);
+            return View("NewToDoList", lists);
         }
 
         public async Task<List<ToDoList>> AllLists()
