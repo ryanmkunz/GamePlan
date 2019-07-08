@@ -10,7 +10,7 @@ namespace GamePlan.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Index","Events");
+            return RedirectToAction("Index","ToDoLists");
         }
 
         public ActionResult About()

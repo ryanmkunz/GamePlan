@@ -18,10 +18,8 @@ namespace GamePlan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: ToDoLists
         public async Task<ActionResult> Index()
         {
-            //return View(await db.ToDoLists.ToListAsync());
             var lists = await AllLists();
             var events = await AllEvents();
 

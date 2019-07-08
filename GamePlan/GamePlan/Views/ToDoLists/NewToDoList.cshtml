@@ -70,11 +70,12 @@
 	function createListItem(cardNum, eventNum, content, objectId){
 		var formId = "toDoListForm" + cardNum;
         var eventId = "toDoListItem" + cardNum + eventNum;
+        var detailsActionLink = '<a href="/Events/Details/' + objectId + '">Details</a>';
         var mapActionLink = '<a href="/Events/Map/' + objectId + '">Map</a>';
         var emailActionLink = '<a href="/EmailNotify/SendReminder/' + objectId + '">Email</a>';
         var deleteActionLink = '<a href="/Events/Delete/' + objectId + '">Delete</a>';
         var editActionLink = '<a href="/Events/Edit/' + objectId + '">Edit</a>';
-        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
+        var toDoListItem = '<input type="checkbox" id="' + eventId + '"><span>' + content + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         document.getElementById(formId).innerHTML += toDoListItem;
     }
 
@@ -90,6 +91,7 @@
                 Category: category
             };
             createEvent(newEvent);
+            document.location.reload();
         });
     }
 

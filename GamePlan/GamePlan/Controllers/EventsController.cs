@@ -18,100 +18,7 @@ namespace GamePlan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Events
-        public async Task<ActionResult> Index()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:49757/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync("api/Events");
-                    response.EnsureSuccessStatusCode();
-                    string data = await response.Content.ReadAsStringAsync();
-                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-
-                    return View("Index", jsonResults);
-                }
-                catch (Exception e)
-                {
-                    return View("Home");
-                }
-            }
-        }
-
-        public async Task<ActionResult> Map(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            //---------------------------------------------------------------
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:49757/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync("api/Events");
-                    response.EnsureSuccessStatusCode();
-                    string data = await response.Content.ReadAsStringAsync();
-                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-                    var singleEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
-                    return View("Map", singleEvent);
-                }
-                catch (Exception e)
-                {
-                    return View("Home");
-                }
-            }
-            //---------------------------------------------------------------
-            //Event @event = db.Events.Find(id);
-            //if (@event == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(@event);
-        }
-
-        public async Task<ActionResult> Invites()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:49757/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync("api/Events");
-                    response.EnsureSuccessStatusCode();
-                    string data = await response.Content.ReadAsStringAsync();
-                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-                    var invites = jsonResults.Where(e => e.Invite == User.Identity.Name).ToList();
-
-                    return View("Invites", invites);
-                }
-                catch (Exception e)
-                {
-                    return View("Home");
-                }
-            }
-        }
-
-        public async Task<ActionResult> Recommended(double? currentTemp)
-        {
-            var allEvents = await AllEvents();
-            var filteredByWeekDay = allEvents.Where(e => e.Date.Value.DayOfWeek == DateTime.Today.DayOfWeek).ToList();
-            var filteredByWeather = allEvents.Where(e => e.Temp >= currentTemp).ToList();
-            var recommended = filteredByWeather;
-            //recommended.AddRange(filteredByWeekDay);
-            return View(recommended);
-        }
-
-        public async Task<IEnumerable<Event>> AllEvents()
+        public async Task<IEnumerable<Event>> GetAllEvents()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -134,6 +41,48 @@ namespace GamePlan.Controllers
             }
         }
 
+        public async Task<Event> GetEventById(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+            var allEvents = await GetAllEvents();
+            return allEvents.Where(e => e.Id == id).SingleOrDefault();
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            return View("Index", await GetAllEvents());
+        }
+        
+        public async Task<ActionResult> Map(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View("Map", await GetEventById(id));
+        }
+
+        public async Task<ActionResult> Invites()
+        {
+            var allEvents = await GetAllEvents();
+            var invites = allEvents.Where(e => e.Invite == User.Identity.Name).ToList();
+
+            return View("Invites", invites);
+        }
+
+        public async Task<ActionResult> Recommended(double? currentTemp)
+        {
+            var allEvents = await GetAllEvents();
+            var filteredByWeekDay = allEvents.Where(e => e.Date.Value.DayOfWeek == DateTime.Today.DayOfWeek).ToList();
+            var filteredByWeather = allEvents.Where(e => e.Temp >= currentTemp).ToList();
+            var recommended = filteredByWeather;
+            //recommended.AddRange(filteredByWeekDay);
+            return View(recommended);
+        }
+
         // GET: Events/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -141,7 +90,7 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = await db.Events.FindAsync(id);
+            Event @event = await GetEventById(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -179,31 +128,8 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Event @event = await db.Events.FindAsync(id);
-            //if (@event == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(@event);
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:49757/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync("api/Events");
-                    response.EnsureSuccessStatusCode();
-                    string data = await response.Content.ReadAsStringAsync();
-                    var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-                    var selectedEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();
-                    return View(selectedEvent);
-                }
-                catch (Exception e)
-                {
-                    return View("Home");
-                }
-            }
+            var selectedEvent = await GetEventById(id);
+            return View(selectedEvent);
         }
 
         // POST: Events/Edit/5
@@ -238,31 +164,22 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Event @event = await db.Events.FindAsync(id);
-            //if (@event == null)
-            //{
-            //    return HttpNotFound();
-            //}
 
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:49757/");
                 client.DefaultRequestHeaders.Accept.Clear();
-                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 try
                 {
                     HttpResponseMessage response = await client.DeleteAsync("api/Events/" + id);
-                    response.EnsureSuccessStatusCode();
-                    //string data = await response.Content.ReadAsStringAsync();
-                    //var jsonResults = JsonConvert.DeserializeObject<IEnumerable<Event>>(data).ToList();
-                    //var selectedEvent = jsonResults.Where(e => e.Id == id).SingleOrDefault();                    
+                    response.EnsureSuccessStatusCode();                   
                 }
                 catch (Exception e)
                 {
-                    return View("Index");
+                    return RedirectToAction("Index", "ToDoLists");
                 }
             }
-            return View("Index");
+            return RedirectToAction("Index", "ToDoLists");
         }
 
         // POST: Events/Delete/5
