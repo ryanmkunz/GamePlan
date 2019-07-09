@@ -41,37 +41,62 @@ namespace GamePlanService2.Controllers
 
         // PUT: api/Events/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutEvent(int id, Event @event)
+        public IHttpActionResult PutEvent(Event @event)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != @event.Id)
-            {
-                return BadRequest();
-            }
+            var existingEvent = db.Events.Where(e => e.Id == @event.Id).FirstOrDefault();
 
-            db.Entry(@event).State = EntityState.Modified;
-
-            try
+            if (existingEvent != null)
             {
+                existingEvent.Category = @event.Category;
+                existingEvent.Description = @event.Description;
+                existingEvent.Date = @event.Date;
+                existingEvent.EmailNotification = @event.EmailNotification;
+                existingEvent.Lat = @event.Lat;
+                existingEvent.Lng = @event.Lng;
+
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
+            
+            return Ok();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            //if (id != @event.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            //db.Entry(@event).State = EntityState.Modified;
+
+            //try
+            //{
+            //    db.SaveChanges();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!EventExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Events

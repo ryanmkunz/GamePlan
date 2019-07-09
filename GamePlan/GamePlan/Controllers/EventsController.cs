@@ -119,13 +119,12 @@ namespace GamePlan.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:49757/api/Events");
+                client.BaseAddress = new Uri("http://localhost:49757/");
 
                 //HTTP POST
                 var jsonString = JsonConvert.SerializeObject(@event);
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                var putTask = client.PutAsync("Event", content);
-                //var putTask = client.PutAsJsonAsync<Event>("Event", @event);
+                var putTask = client.PutAsync("api/Events", content);
                 putTask.Wait();
 
                 var result = putTask.Result;
