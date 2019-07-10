@@ -47,16 +47,39 @@
         getCollection(json);
     });
 
-	function getCollection(collection){
+        function getCollection(collection) {
+            createBlankCard();
 		for (var i = 0; i <= collection.length - 1; i++) {
 			createCard(i,collection[i].Title);
             var events = collection[i].Events;
-            for (var j = 0; j <= events.length - 1; j++) {
-                createListItem(i, j, events[j].Description, events[j].Id);
-			}
-            createTextBox(i, events[0].Category);
+            if (events.length > 0) {
+                for (var j = 0; j <= events.length - 1; j++) {
+                    createListItem(i, j, events[j].Description, events[j].Id);
+                }
+                createTextBox(i, events[0].Category);
+            }
+            else {
+                createTextBox(i, collection[i].Title)
+            }            
 		}
 	}
+
+    function createBlankCard() {
+        var card = $('<div class="card" id="blankCard" style="width: 25rem;"><h5 class"card-title">Create New List</ht></div>');
+        var toDoListForm = '<form action="/action_page.php" id="blankCardForm"></form>';
+        var newToDoListTextBox = '<input type="text" id="blankCardTextBox" value="Add"><span><input type="button" id="blankCardSbtBtn" value="Submit"></span>';
+        $('#toDoList').append(card);
+        document.getElementById("blankCard").innerHTML += toDoListForm;
+        document.getElementById("blankCardForm").innerHTML += newToDoListTextBox;
+        $("#blankCardSbtBtn").on('click', function () {
+            var newToDoList = {
+                Title: $("#blankCardTextBox").val(),
+                Category: $("#blankCardTextBox").val()
+            };
+            createToDoList(newToDoList);
+            document.location.reload();
+        });
+    }
 
 	function createCard(cardNum, cartTitle){
 		var cardId = "toDoCard" + cardNum;
@@ -92,6 +115,17 @@
             };
             createEvent(newEvent);
             document.location.reload();
+        });
+    }
+
+    function createToDoList(newToDoList) {
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(newToDoList),
+            url: "http://localhost:49757/api/ToDoLists",
+            contentType: "application/json"
+        }).done(function (res) {
+            console.log('res', res);
         });
     }
 

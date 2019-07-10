@@ -64,39 +64,8 @@ namespace GamePlanService2.Controllers
             else
             {
                 return NotFound();
-            }
-            
+            }            
             return Ok();
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            //if (id != @event.Id)
-            //{
-            //    return BadRequest();
-            //}
-
-            //db.Entry(@event).State = EntityState.Modified;
-
-            //try
-            //{
-            //    db.SaveChanges();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!EventExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            //return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Events
