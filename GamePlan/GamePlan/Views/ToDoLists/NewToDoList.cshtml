@@ -49,8 +49,8 @@
 
         function getCollection(collection) {
             createBlankCard();
-		for (var i = 0; i <= collection.length - 1; i++) {
-			createCard(i,collection[i].Title);
+            for (var i = 0; i <= collection.length - 1; i++) {
+                createCard(i, collection[i].Title, collection[i].Id);
             var events = collection[i].Events;
             if (events.length > 0) {
                 for (var j = 0; j <= events.length - 1; j++) {
@@ -81,11 +81,13 @@
         });
     }
 
-	function createCard(cardNum, cartTitle){
+	function createCard(cardNum, cartTitle, listId){
 		var cardId = "toDoCard" + cardNum;
-		var formId = "toDoListForm" + cardNum;
-		var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">'+cartTitle+'</h5></div>');
-		var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';
+        var formId = "toDoListForm" + cardNum;
+        var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '">Edit</a>';
+        var deleteActionLink = '<a href="/ToDoLists/Delete/' + listId + '">Delete</a>';
+        var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">' + cartTitle + editActionLink + deleteActionLink + '</h5></div>');
+        var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';        
 		$('#toDoList').append(card);
 		document.getElementById(cardId).innerHTML += toDoListForm;
 	}

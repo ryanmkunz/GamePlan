@@ -153,24 +153,45 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
-            if (toDoList == null)
-            {
-                return HttpNotFound();
-            }
-            return View(toDoList);
-        }
+            var allLists = await AllLists();
+            var currentList = allLists.Where(L => L.Id == id).FirstOrDefault();
+            var allEvents = await AllEvents();
+            var relatedEvents = allEvents.Where(e => e.Category == currentList.Category).ToList();
 
-        // POST: ToDoLists/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
-            db.ToDoLists.Remove(toDoList);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+            foreach (var item in relatedEvents)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:49757/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    try
+                    {
+                        HttpResponseMessage response = await client.DeleteAsync("api/Events/" + item.Id);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception e)
+                    {
+                        return RedirectToAction("Index", "ToDoLists");
+                    }
+                }
+            }
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:49757/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                try
+                {
+                    HttpResponseMessage response = await client.DeleteAsync("api/ToDoLists/" + id);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction("Index", "ToDoLists");
+                }
+            }
+            return RedirectToAction("Index", "ToDoLists");
+        }        
 
         protected override void Dispose(bool disposing)
         {
