@@ -20,8 +20,8 @@ namespace GamePlan.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var lists = await AllLists();
-            var events = await AllEvents();
+            var lists = await GetAllLists();
+            var events = await GetAllEvents();
 
             foreach (var item in lists)
             {
@@ -31,7 +31,7 @@ namespace GamePlan.Controllers
             return View("NewToDoList", lists);
         }
 
-        public async Task<List<ToDoList>> AllLists()
+        public async Task<List<ToDoList>> GetAllLists()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -54,7 +54,17 @@ namespace GamePlan.Controllers
             }
         }
 
-        public async Task<IEnumerable<Event>> AllEvents()
+        public async Task<ToDoList> GetListById(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+            var allLists = await GetAllLists();
+            return allLists.Where(L => L.Id == id).FirstOrDefault();            
+        }
+
+        public async Task<IEnumerable<Event>> GetAllEvents()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -122,7 +132,7 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ToDoList toDoList = await db.ToDoLists.FindAsync(id);
+            var toDoList = await GetListById(id);
             if (toDoList == null)
             {
                 return HttpNotFound();
@@ -153,9 +163,9 @@ namespace GamePlan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var allLists = await AllLists();
+            var allLists = await GetAllLists();
             var currentList = allLists.Where(L => L.Id == id).FirstOrDefault();
-            var allEvents = await AllEvents();
+            var allEvents = await GetAllEvents();
             var relatedEvents = allEvents.Where(e => e.Category == currentList.Category).ToList();
 
             foreach (var item in relatedEvents)
