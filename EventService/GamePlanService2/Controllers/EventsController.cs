@@ -52,7 +52,7 @@ namespace GamePlanService2.Controllers
 
             if (existingEvent != null)
             {
-                existingEvent.Category = @event.Category;
+                existingEvent.ToDoListId = @event.ToDoListId;
                 existingEvent.Description = @event.Description;
                 existingEvent.Date = @event.Date;
                 existingEvent.EmailNotification = @event.EmailNotification;

@@ -12,7 +12,6 @@ namespace GamePlanService2.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Category = c.String(),
                         Description = c.String(),
                         Lat = c.Double(nullable: false),
                         Lng = c.Double(nullable: false),
@@ -20,11 +19,20 @@ namespace GamePlanService2.Migrations
                         Invite = c.String(),
                         Temp = c.Double(nullable: false),
                         Date = c.DateTime(),
-                        ToDoList_Id = c.Int(),
+                        ToDoListId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ToDoLists", t => t.ToDoList_Id)
-                .Index(t => t.ToDoList_Id);
+                .ForeignKey("dbo.ToDoLists", t => t.ToDoListId, cascadeDelete: true)
+                .Index(t => t.ToDoListId);
+            
+            CreateTable(
+                "dbo.ToDoLists",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Title = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -48,16 +56,6 @@ namespace GamePlanService2.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
-            CreateTable(
-                "dbo.ToDoLists",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Title = c.String(),
-                        Category = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -111,21 +109,21 @@ namespace GamePlanService2.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Events", "ToDoList_Id", "dbo.ToDoLists");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Events", "ToDoListId", "dbo.ToDoLists");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Events", new[] { "ToDoList_Id" });
+            DropIndex("dbo.Events", new[] { "ToDoListId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.ToDoLists");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.ToDoLists");
             DropTable("dbo.Events");
         }
     }

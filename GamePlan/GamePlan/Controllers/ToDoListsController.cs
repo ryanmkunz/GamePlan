@@ -11,6 +11,7 @@ using GamePlan.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace GamePlan.Controllers
 {
@@ -25,7 +26,7 @@ namespace GamePlan.Controllers
 
             foreach (var item in lists)
             {
-                var listEvents = events.Where(e => e.Category == item.Category).ToList();
+                var listEvents = events.Where(e => e.ToDoListId == item.Id).ToList();
                 item.Events = listEvents;
             }
             return View("NewToDoList", lists);
@@ -145,15 +146,25 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Category")] ToDoList toDoList)
+        public ActionResult Edit([Bind(Include = "Id,Title")] ToDoList toDoList)
         {
-            if (ModelState.IsValid)
+            using (var client = new HttpClient())
             {
-                db.Entry(toDoList).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                client.BaseAddress = new Uri("http://localhost:49757/");
+
+                //HTTP POST
+                var jsonString = JsonConvert.SerializeObject(toDoList);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var putTask = client.PutAsync("api/ToDoLists", content);
+                putTask.Wait();
+
+                var result = putTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return View(toDoList);
+                }
             }
-            return View(toDoList);
+            return RedirectToAction("Index", "ToDoLists");
         }
 
         // GET: ToDoLists/Delete/5
@@ -166,7 +177,7 @@ namespace GamePlan.Controllers
             var allLists = await GetAllLists();
             var currentList = allLists.Where(L => L.Id == id).FirstOrDefault();
             var allEvents = await GetAllEvents();
-            var relatedEvents = allEvents.Where(e => e.Category == currentList.Category).ToList();
+            var relatedEvents = allEvents.Where(e => e.ToDoListId == currentList.Id).ToList();
 
             foreach (var item in relatedEvents)
             {

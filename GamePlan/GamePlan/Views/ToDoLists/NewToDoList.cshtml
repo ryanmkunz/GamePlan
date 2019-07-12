@@ -56,10 +56,10 @@
                 for (var j = 0; j <= events.length - 1; j++) {
                     createListItem(i, j, events[j].Description, events[j].Id);
                 }
-                createTextBox(i, events[0].Category);
+                createTextBox(i, events[0].ToDoListId);
             }
             else {
-                createTextBox(i, collection[i].Title)
+                createTextBox(i, collection[i].Id)
             }            
 		}
 	}
@@ -104,7 +104,7 @@
         document.getElementById(formId).innerHTML += toDoListItem;
     }
 
-    function createTextBox(cardNum, category) {
+    function createTextBox(cardNum, toDoListId) {
         var formId = "toDoListForm" + cardNum;
         var textBoxId = "newEventTextBoxfor" + cardNum;
         var newEventSubmitId = "newEventSubmit" + cardNum;
@@ -113,7 +113,7 @@
         $("#" + newEventSubmitId + "").on('click', function () {
             var newEvent = {
                 Description: $("#" + textBoxId + "").val(),
-                Category: category
+                ToDoListId: toDoListId
             };
             createEvent(newEvent);
             document.location.reload();

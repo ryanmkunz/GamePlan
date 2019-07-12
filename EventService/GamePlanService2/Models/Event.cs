@@ -11,7 +11,6 @@ namespace GamePlanService2.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Category { get; set; }
         public string Description { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
@@ -22,5 +21,9 @@ namespace GamePlanService2.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? Date { get; set; }
+
+        public int ToDoListId { get; set; }
+        [ForeignKey("ToDoListId")]
+        public ToDoList ToDoList { get; set; }
     }
 }

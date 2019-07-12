@@ -41,37 +41,26 @@ namespace GamePlanService2.Controllers
 
         // PUT: api/ToDoLists/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutToDoList(int id, ToDoList toDoList)
+        public IHttpActionResult PutToDoList(ToDoList toDoList)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != toDoList.Id)
-            {
-                return BadRequest();
-            }
+            var existingList = db.ToDoLists.Where(e => e.Id == toDoList.Id).FirstOrDefault();
 
-            db.Entry(toDoList).State = EntityState.Modified;
-
-            try
+            if (existingList != null)
             {
+                existingList.Title = toDoList.Title;
+
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!ToDoListExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
 
         // POST: api/ToDoLists

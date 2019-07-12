@@ -11,7 +11,6 @@ namespace GamePlanService2.Models
         [Key]
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Category { get; set; }
         public List<Event> Events { get; set; }
     }
 }

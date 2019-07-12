@@ -115,7 +115,7 @@ namespace GamePlan.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Category,Description,Lat,Lng,EmailNotification,Date")] Event @event)
+        public ActionResult Edit([Bind(Include = "Id,Description,Lat,Lng,EmailNotification,Date,ToDoListId")] Event @event)
         {
             using (var client = new HttpClient())
             {
@@ -130,7 +130,6 @@ namespace GamePlan.Controllers
                 var result = putTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-
                     return View(@event);
                 }
             }
