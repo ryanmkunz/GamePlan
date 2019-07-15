@@ -188,9 +188,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907121834273_1.cs" />
-    <Compile Include="Migrations\201907121834273_1.Designer.cs">
-      <DependentUpon>201907121834273_1.cs</DependentUpon>
+    <Compile Include="Migrations\201907151920461_1.cs" />
+    <Compile Include="Migrations\201907151920461_1.Designer.cs">
+      <DependentUpon>201907151920461_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -295,8 +295,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907121834273_1.resx">
-      <DependentUpon>201907121834273_1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907151920461_1.resx">
+      <DependentUpon>201907151920461_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

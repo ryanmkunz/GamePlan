@@ -17,6 +17,7 @@ namespace GamePlanService2.Models
         public bool EmailNotification { get; set; }
         public string Invite { get; set; }
         public double Temp { get; set; }
+        public bool Complete { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
@@ -25,5 +26,10 @@ namespace GamePlanService2.Models
         public int ToDoListId { get; set; }
         [ForeignKey("ToDoListId")]
         public ToDoList ToDoList { get; set; }
+
+        public Event()
+        {
+            Complete = false;
+        }
     }
 }

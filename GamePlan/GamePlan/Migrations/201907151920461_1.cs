@@ -1,4 +1,4 @@
-namespace GamePlanService2.Migrations
+namespace GamePlan.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -18,6 +18,7 @@ namespace GamePlanService2.Migrations
                         EmailNotification = c.Boolean(nullable: false),
                         Invite = c.String(),
                         Temp = c.Double(nullable: false),
+                        Complete = c.Boolean(nullable: false),
                         Date = c.DateTime(),
                         ToDoListId = c.Int(nullable: false),
                     })
