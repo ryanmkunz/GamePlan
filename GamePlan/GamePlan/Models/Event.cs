@@ -26,10 +26,5 @@ namespace GamePlan.Models
         public int ToDoListId { get; set; }
         [ForeignKey("ToDoListId")]
         public ToDoList ToDoList { get; set; }
-
-        public Event()
-        {
-            Complete = false;
-        }
     }
 }

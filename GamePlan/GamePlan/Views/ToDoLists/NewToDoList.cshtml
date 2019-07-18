@@ -44,16 +44,16 @@
 
     <div id="toDoList"></div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
         var json = @Html.Raw(Json.Encode(@Model));
         getCollection(json);
     });
 
-        function getCollection(collection) {
-            createBlankCard();
-            for (var i = 0; i <= collection.length - 1; i++) {
-                createCard(i, collection[i].Title, collection[i].Id);
+    function getCollection(collection) {
+        createBlankCard();
+        for (var i = 0; i <= collection.length - 1; i++) {
+            createCard(i, collection[i].Title, collection[i].Id);
             var events = collection[i].Events;
             if (events.length > 0) {
                 for (var j = 0; j <= events.length - 1; j++) {
@@ -63,9 +63,9 @@
             }
             else {
                 createTextBox(i, collection[i].Id)
-            }            
-		}
-	}
+            }
+        }
+	}	
 
     function createBlankCard() {
         var card = $('<div class="card" id="blankCard" style="width: 25rem;"><h5 class"card-title">Create New List</ht></div>');
@@ -84,7 +84,7 @@
         });
     }
 
-	function createCard(cardNum, cartTitle, listId){
+	function createCard(cardNum, cartTitle, listId) {
 		var cardId = "toDoCard" + cardNum;
         var formId = "toDoListForm" + cardNum;
         var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '">Edit</a>';
@@ -96,31 +96,29 @@
 	}
 
     function createListItem(cardNum, eventNum, event) {
-        var content = event.Description;
-        var objectId = event.Id;
-        var complete = event.Complete;
 		var formId = "toDoListForm" + cardNum;
         var eventId = "toDoListItem" + cardNum + eventNum;
-        var detailsActionLink = '<a href="/Events/Details/' + objectId + '">Details</a>';
-        var mapActionLink = '<a href="/Events/Map/' + objectId + '">Map</a>';
-        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + objectId + '">Email</a>';
-        var deleteActionLink = '<a href="/Events/Delete/' + objectId + '">Delete</a>';
-        var editActionLink = '<a href="/Events/Edit/' + objectId + '">Edit</a>';
+        var detailsActionLink = '<a href="/Events/Details/' + eventId + '">Details</a>';
+        var mapActionLink = '<a href="/Events/Map/' + eventId + '">Map</a>';
+        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + eventId + '">Email</a>';
+        var deleteActionLink = '<a href="/Events/Delete/' + eventId + '">Delete</a>';
+        var editActionLink = '<a href="/Events/Edit/' + eventId + '">Edit</a>';
         var checkboxId = "checkbox" + eventId + "";
-        if (complete == false) {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"><span id="content' + eventId + '"> ' + content + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span> <br>';
+        if (!event.Complete) {
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"><span id="content' + eventId + '"> ' + event.Description + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         }
         else {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"><span id="content' + eventId + '" class="eventChecked"> ' + content + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span> <br>';
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"checked><span id="content' + eventId + '" class="eventChecked"> ' + event.Description + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         }
         document.getElementById(formId).innerHTML += toDoListItem;
-        document.getElementById(checkboxId).on('click', function () {
-            if ($(this).attr('checked') == false) {
-                completeEvent(event, true);
+        $("#" + checkboxId + "").on('click', function () {
+            if (this.attr("checked") == true) {
+                var complete = true;
             }
             else {
-                completeEvent(event, false);
+                var complete = false;
             }
+            completeEvent(event, complete);
             document.location.reload();
         });
     }
@@ -163,14 +161,14 @@
             });
     }
 
-    function completeEvent(event, status) {
-        if (status == true) {
-            event.Complete == true;
+    function completeEvent(event, complete) {
+        if (complete) {
+            event.Complete = true;
         }
         else {
-            event.Complete == false;
+            event.Complete = false;
         }
-        completedEvent.Complete == true;
+
         $.ajax({
             type: "PUT",
             data: JSON.stringify(event),
@@ -178,10 +176,10 @@
             contentType: "application/json"
         }).done(function (res) {
             console.log('res', res);
-            });
+        });
     }
 
-    </script>
+</script>
 </body>
 </html>
 
