@@ -7,13 +7,22 @@
     <meta name="viewport" content="width=device-width" />
     <title>MainPage</title>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="https://kit.fontawesome.com/a0881bae07.js"></script>
 
     <style>
         .card {
-            background-color: goldenrod;
+            background-color: beige;
+            margin: 10px
         }
         .eventChecked {
             text-decoration: line-through
+        }
+        i {
+            text-align: right
+        }
+        a {
+            color: black;
+            text-decoration: none
         }
     </style>
 
@@ -87,9 +96,9 @@
 	function createCard(cardNum, cartTitle, listId) {
 		var cardId = "toDoCard" + cardNum;
         var formId = "toDoListForm" + cardNum;
-        var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '">Edit</a>';
-        var deleteActionLink = '<a href="/ToDoLists/Delete/' + listId + '">Delete</a>';
-        var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">' + cartTitle + editActionLink + deleteActionLink + '</h5></div>');
+        var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '"><i class="far fa-edit"></i></a>';
+        var deleteActionLink = '<a href="/ToDoLists/Delete/' + listId + '"><i class="far fa-trash-alt"></i></a>';
+        var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">' + cartTitle + " " + editActionLink + " " + deleteActionLink + '</h5></div>');
         var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';        
 		$('#toDoList').append(card);
 		document.getElementById(cardId).innerHTML += toDoListForm;
@@ -98,17 +107,17 @@
     function createListItem(cardNum, eventNum, event) {
 		var formId = "toDoListForm" + cardNum;
         var eventId = "toDoListItem" + cardNum + eventNum;
-        var detailsActionLink = '<a href="/Events/Details/' + event.Id + '">Details</a>';
-        var mapActionLink = '<a href="/Events/Map/' + event.Id + '">Map</a>';
-        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + event.Id + '">Email</a>';
-        var deleteActionLink = '<a href="/Events/Delete/' + event.Id + '">Delete</a>';
-        var editActionLink = '<a href="/Events/Edit/' + event.Id + '">Edit</a>';
+        //var detailsActionLink = '<a href="/Events/Details/' + event.Id + '">Details</a>';
+        var mapActionLink = '<a href="/Events/Map/' + event.Id + '"><i class="fas fa-map-pin"></i></a>';
+        //var emailActionLink = '<a href="/EmailNotify/SendReminder/' + event.Id + '">Email</a>';
+        var deleteActionLink = '<a href="/Events/Delete/' + event.Id + '"><i class="far fa-trash-alt"></i></a>';
+        var editActionLink = '<a href="/Events/Edit/' + event.Id + '"><i class="far fa-edit"></i></a>';
         var checkboxId = "checkbox" + event.Id + "";
-        if (!event.Complete) {            
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"><span id="content' + eventId + '"> ' + event.Description + '</span><span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
+        if (!event.Complete) {
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" >' + event.Description + '</a>' + " " + '</span><span>' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         else {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked><span id="content' + eventId + '" class="eventChecked"> ' + event.Description + '</span><span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" >' + event.Description + '</a>' + " " + '</span><span>' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         document.getElementById(formId).innerHTML += toDoListItem;
         $(document).on('change', "#" + checkboxId + "", function () {
@@ -154,17 +163,13 @@
             });
     }
 
-    function completeEvent(id, description, lat, lng, emailNotification, invite, temp, complete, date, toDoListId) {
-        alert("completeEvent() fired");
+    function completeEvent(id, description, lat, lng, emailNotification, invite, temp, complete, date, toDoListId) {        
         if (complete == false) {
             var updatedEvent = { Id: id, Description: description, Lat: lat, Lng: lng, EmailNotification: emailNotification, Invite: invite, Temp: temp, Complete: true, Date: date, ToDoListId: toDoListId };
-
         }
         else {
             var updatedEvent = { Id: id, Description: description, Lat: lat, Lng: lng, EmailNotification: emailNotification, Invite: invite, Temp: temp, Complete: false, Date: date, ToDoListId: toDoListId };
-
         }
-        alert("Attempting PUT");
         $.ajax({
             type: "PUT",
             data: JSON.stringify(updatedEvent),
