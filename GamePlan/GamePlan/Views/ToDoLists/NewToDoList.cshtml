@@ -46,7 +46,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var json = @Html.Raw(Json.Encode(@Model));
+        var json = @Html.Raw(Json.Encode(@Model));        
         getCollection(json);
     });
 
@@ -54,7 +54,7 @@
         createBlankCard();
         for (var i = 0; i <= collection.length - 1; i++) {
             createCard(i, collection[i].Title, collection[i].Id);
-            var events = collection[i].Events;
+            var events = collection[i].Events;            
             if (events.length > 0) {
                 for (var j = 0; j <= events.length - 1; j++) {
                     createListItem(i, j, events[j]);
@@ -98,28 +98,24 @@
     function createListItem(cardNum, eventNum, event) {
 		var formId = "toDoListForm" + cardNum;
         var eventId = "toDoListItem" + cardNum + eventNum;
-        var detailsActionLink = '<a href="/Events/Details/' + eventId + '">Details</a>';
-        var mapActionLink = '<a href="/Events/Map/' + eventId + '">Map</a>';
-        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + eventId + '">Email</a>';
-        var deleteActionLink = '<a href="/Events/Delete/' + eventId + '">Delete</a>';
-        var editActionLink = '<a href="/Events/Edit/' + eventId + '">Edit</a>';
-        var checkboxId = "checkbox" + eventId + "";
-        if (!event.Complete) {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"><span id="content' + eventId + '"> ' + event.Description + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
+        var detailsActionLink = '<a href="/Events/Details/' + event.Id + '">Details</a>';
+        var mapActionLink = '<a href="/Events/Map/' + event.Id + '">Map</a>';
+        var emailActionLink = '<a href="/EmailNotify/SendReminder/' + event.Id + '">Email</a>';
+        var deleteActionLink = '<a href="/Events/Delete/' + event.Id + '">Delete</a>';
+        var editActionLink = '<a href="/Events/Edit/' + event.Id + '">Edit</a>';
+        var checkboxId = "checkbox" + event.Id + "";
+        if (!event.Complete) {            
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"><span id="content' + eventId + '"> ' + event.Description + '</span><span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         }
         else {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '"checked><span id="content' + eventId + '" class="eventChecked"> ' + event.Description + '</span> <span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked><span id="content' + eventId + '" class="eventChecked"> ' + event.Description + '</span><span>' + detailsActionLink + mapActionLink + emailActionLink + editActionLink + deleteActionLink + '</span><br>';
         }
         document.getElementById(formId).innerHTML += toDoListItem;
-        $("#" + checkboxId + "").on('click', function () {
-            if (this.attr("checked") == true) {
-                var complete = true;
+        $(document).on('change', "#" + checkboxId + "", function () {
+            //alert("Click function is working");
+            if (this.checked) {
+                alert(event.Description);
             }
-            else {
-                var complete = false;
-            }
-            completeEvent(event, complete);
-            document.location.reload();
         });
     }
 
@@ -161,14 +157,16 @@
             });
     }
 
-    function completeEvent(event, complete) {
-        if (complete) {
+    function completeEvent(event) {
+        alert("completeEvent() fired");
+
+        if (event.Complete == false) {
             event.Complete = true;
         }
         else {
             event.Complete = false;
         }
-
+        alert("Attempting PUT");
         $.ajax({
             type: "PUT",
             data: JSON.stringify(event),
@@ -182,4 +180,5 @@
 </script>
 </body>
 </html>
+
 
