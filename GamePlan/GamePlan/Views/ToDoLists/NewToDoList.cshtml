@@ -112,10 +112,7 @@
         }
         document.getElementById(formId).innerHTML += toDoListItem;
         $(document).on('change', "#" + checkboxId + "", function () {
-            //alert("Click function is working");
-            if (this.checked) {
-                alert(event.Description);
-            }
+                completeEvent(event.Id, event.Description, event.Lat, event.Lng, event.EmailNotification, event.Invite, event.Temp, event.Complete, event.Date, event.ToDoListId);            
         });
     }
 
@@ -157,23 +154,25 @@
             });
     }
 
-    function completeEvent(event) {
+    function completeEvent(id, description, lat, lng, emailNotification, invite, temp, complete, date, toDoListId) {
         alert("completeEvent() fired");
+        if (complete == false) {
+            var updatedEvent = { Id: id, Description: description, Lat: lat, Lng: lng, EmailNotification: emailNotification, Invite: invite, Temp: temp, Complete: true, Date: date, ToDoListId: toDoListId };
 
-        if (event.Complete == false) {
-            event.Complete = true;
         }
         else {
-            event.Complete = false;
+            var updatedEvent = { Id: id, Description: description, Lat: lat, Lng: lng, EmailNotification: emailNotification, Invite: invite, Temp: temp, Complete: false, Date: date, ToDoListId: toDoListId };
+
         }
         alert("Attempting PUT");
         $.ajax({
             type: "PUT",
-            data: JSON.stringify(event),
+            data: JSON.stringify(updatedEvent),
             url: "http://localhost:49757/api/Events",
             contentType: "application/json"
         }).done(function (res) {
             console.log('res', res);
+            document.location.reload();
         });
     }
 

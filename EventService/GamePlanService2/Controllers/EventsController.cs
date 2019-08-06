@@ -52,12 +52,14 @@ namespace GamePlanService2.Controllers
 
             if (existingEvent != null)
             {
-                existingEvent.ToDoListId = @event.ToDoListId;
                 existingEvent.Description = @event.Description;
-                existingEvent.Date = @event.Date;
-                existingEvent.EmailNotification = @event.EmailNotification;
                 existingEvent.Lat = @event.Lat;
                 existingEvent.Lng = @event.Lng;
+                existingEvent.EmailNotification = @event.EmailNotification;
+                existingEvent.Invite = @event.Invite;
+                existingEvent.Temp = @event.Temp;
+                existingEvent.Complete = @event.Complete;
+                existingEvent.Date = @event.Date;
 
                 db.SaveChanges();
             }
