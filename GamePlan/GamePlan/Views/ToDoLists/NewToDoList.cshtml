@@ -11,8 +11,17 @@
 
     <style>
         .card {
-            background-color: beige;
-            margin: 10px
+            /*width: 25%;*/
+            background-color: #fff475;
+            margin: 10px;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 5px;
+            height: unset
+        }
+        #blankCard {
+            max-height: 80px
         }
         .eventChecked {
             text-decoration: line-through
@@ -20,9 +29,41 @@
         i {
             text-align: right
         }
+        .card-title {
+            width: 70%;
+            text-align: left;
+            display: inline-block
+        }
+        .card-item {
+            width: 62%;
+            text-align: left;
+            display: inline-block
+        }
+        .checkboxes {
+            width: 5%;
+            margin-top: 0px;
+            display: inline-block
+        }
+        .icons {
+            width: 30%;
+            text-align: right;
+            display: inline-block
+        }
         a {
             color: black;
             text-decoration: none
+        }
+        .textbox {
+            width: 70%;
+            margin-top: 5px;
+            margin-bottom: 10px
+        }
+        .submitBtn {
+            width: 30%
+        }
+        #toDoList {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr
         }
     </style>
 
@@ -59,8 +100,7 @@
         getCollection(json);
     });
 
-    function getCollection(collection) {
-        createBlankCard();
+    function getCollection(collection) {        
         for (var i = 0; i <= collection.length - 1; i++) {
             createCard(i, collection[i].Title, collection[i].Id);
             var events = collection[i].Events;            
@@ -74,12 +114,13 @@
                 createTextBox(i, collection[i].Id)
             }
         }
+        createBlankCard();
 	}	
 
     function createBlankCard() {
-        var card = $('<div class="card" id="blankCard" style="width: 25rem;"><h5 class"card-title">Create New List</ht></div>');
+        var card = $('<div class="card" id="blankCard"><h5><b class"card-title">Create New List</b></h5></div>');
         var toDoListForm = '<form action="/action_page.php" id="blankCardForm"></form>';
-        var newToDoListTextBox = '<input type="text" id="blankCardTextBox" value="Add"><span><input type="button" id="blankCardSbtBtn" value="Submit"></span>';
+        var newToDoListTextBox = '<input type="text" id="blankCardTextBox" class="textbox" value="Add"><span><input type="button" id="blankCardSbtBtn" class="submitBtn" value="Submit"></span>';
         $('#toDoList').append(card);
         document.getElementById("blankCard").innerHTML += toDoListForm;
         document.getElementById("blankCardForm").innerHTML += newToDoListTextBox;
@@ -98,7 +139,7 @@
         var formId = "toDoListForm" + cardNum;
         var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '"><i class="far fa-edit"></i></a>';
         var deleteActionLink = '<a href="/ToDoLists/Delete/' + listId + '"><i class="far fa-trash-alt"></i></a>';
-        var card = $('<div class="card" id="' + cardId + '" style="width: 25rem;"><h5 class="card-title">' + cartTitle + " " + editActionLink + " " + deleteActionLink + '</h5></div>');
+        var card = $('<div class="card" id="' + cardId + '"><h5 class="card-title"><b>' + cartTitle + "</b></h5><span class='icons'>" + " " + editActionLink + " " + deleteActionLink + '</span></div>');
         var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';        
 		$('#toDoList').append(card);
 		document.getElementById(cardId).innerHTML += toDoListForm;
@@ -107,17 +148,16 @@
     function createListItem(cardNum, eventNum, event) {
 		var formId = "toDoListForm" + cardNum;
         var eventId = "toDoListItem" + cardNum + eventNum;
-        //var detailsActionLink = '<a href="/Events/Details/' + event.Id + '">Details</a>';
         var mapActionLink = '<a href="/Events/Map/' + event.Id + '"><i class="fas fa-map-pin"></i></a>';
         //var emailActionLink = '<a href="/EmailNotify/SendReminder/' + event.Id + '">Email</a>';
         var deleteActionLink = '<a href="/Events/Delete/' + event.Id + '"><i class="far fa-trash-alt"></i></a>';
         var editActionLink = '<a href="/Events/Edit/' + event.Id + '"><i class="far fa-edit"></i></a>';
         var checkboxId = "checkbox" + event.Id + "";
         if (!event.Complete) {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" >' + event.Description + '</a>' + " " + '</span><span>' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" class="card-item">' + event.Description + '</a>' + " " + '</span><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         else {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" >' + event.Description + '</a>' + " " + '</span><span>' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
+            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" class="card-item"><strike>' + event.Description + '</strike></a>' + " " + '</span><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         document.getElementById(formId).innerHTML += toDoListItem;
         $(document).on('change', "#" + checkboxId + "", function () {
@@ -129,7 +169,7 @@
         var formId = "toDoListForm" + cardNum;
         var textBoxId = "newEventTextBoxfor" + cardNum;
         var newEventSubmitId = "newEventSubmit" + cardNum;
-        var newEventTextBox = '<input type="text" id="' + textBoxId + '" value="Add"><span><input type="button" id="' + newEventSubmitId + '" value="Submit"></span>';
+        var newEventTextBox = '<input type="text" id="' + textBoxId + '"class="textbox" value="Add"><span><input type="button" id="' + newEventSubmitId + '" class="submitBtn" value="Submit"></span>';
         document.getElementById(formId).innerHTML += newEventTextBox;
         $("#" + newEventSubmitId + "").on('click', function () {
             var newEvent = {
