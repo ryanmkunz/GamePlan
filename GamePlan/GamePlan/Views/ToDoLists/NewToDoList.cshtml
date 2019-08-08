@@ -11,31 +11,29 @@
 
     <style>
         .card {
-            /*width: 25%;*/
             background-color: #fff475;
-            margin: 10px;
             padding-top: 5px;
             padding-left: 10px;
             padding-right: 10px;
             border-radius: 5px;
-            height: unset
+            display: inline-block;
+            margin: 0 1rem 1rem 0;
+            width: 100%
+
         }
         #blankCard {
             max-height: 80px
-        }
-        .eventChecked {
-            text-decoration: line-through
         }
         i {
             text-align: right
         }
         .card-title {
-            width: 70%;
+            width: 75%;
             text-align: left;
             display: inline-block
         }
         .card-item {
-            width: 62%;
+            width: 65%;
             text-align: left;
             display: inline-block
         }
@@ -45,7 +43,7 @@
             display: inline-block
         }
         .icons {
-            width: 30%;
+            width: 25%;
             text-align: right;
             display: inline-block
         }
@@ -62,8 +60,9 @@
             width: 30%
         }
         #toDoList {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr
+            columns: 3 200px;
+            column-gap: 1rem;
+            padding: 1rem
         }
     </style>
 
@@ -139,7 +138,7 @@
         var formId = "toDoListForm" + cardNum;
         var editActionLink = '<a href="/ToDoLists/Edit/' + listId + '"><i class="far fa-edit"></i></a>';
         var deleteActionLink = '<a href="/ToDoLists/Delete/' + listId + '"><i class="far fa-trash-alt"></i></a>';
-        var card = $('<div class="card" id="' + cardId + '"><h5 class="card-title"><b>' + cartTitle + "</b></h5><span class='icons'>" + " " + editActionLink + " " + deleteActionLink + '</span></div>');
+        var card = $('<div class="card" id="' + cardId + '"><h5 class="card-title"><b>' + cartTitle + "</b></h5><span class='icons'>" + editActionLink + " " + deleteActionLink + '</span></div>');
         var toDoListForm = '<form action="/action_page.php" id="' + formId + '"></form>';        
 		$('#toDoList').append(card);
 		document.getElementById(cardId).innerHTML += toDoListForm;
