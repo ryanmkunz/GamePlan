@@ -19,7 +19,6 @@
             display: inline-block;
             margin: 0 1rem 1rem 0;
             width: 100%
-
         }
         #blankCard {
             max-height: 80px
@@ -33,7 +32,7 @@
             display: inline-block
         }
         .card-item {
-            width: 65%;
+            width: 75%;
             text-align: left;
             display: inline-block
         }
@@ -42,10 +41,15 @@
             margin-top: 0px;
             display: inline-block
         }
+        .checkboxes2 {
+            margin-top: 0px;
+            display: inline-block;
+            height: auto
+        }
         .icons {
             width: 25%;
             text-align: right;
-            display: inline-block
+            display: inline-block;
         }
         a {
             color: black;
@@ -76,7 +80,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Game Plan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -153,10 +157,10 @@
         var editActionLink = '<a href="/Events/Edit/' + event.Id + '"><i class="far fa-edit"></i></a>';
         var checkboxId = "checkbox" + event.Id + "";
         if (!event.Complete) {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes"> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" class="card-item">' + event.Description + '</a>' + " " + '</span><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
+            var toDoListItem = '<div class="card-item"><div class="checkboxes2"><input type="checkbox" id="' + checkboxId + '" ></div> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '">' + event.Description + '</a>' + " " + '</span></div><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         else {
-            var toDoListItem = '<input type="checkbox" id="' + checkboxId + '" class="checkboxes" checked> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '" class="card-item"><strike>' + event.Description + '</strike></a>' + " " + '</span><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
+            var toDoListItem = '<div class="card-item"><div class="checkboxes2"><input type="checkbox" id="' + checkboxId + '" checked></div> <span id="content' + eventId + '"><a href = "/Events/Details/' + event.Id + '"><strike>' + event.Description + '</strike></a>' + " " + '</span></div><span class="icons">' + mapActionLink + " " + editActionLink + " " + deleteActionLink + '</span><br>';
         }
         document.getElementById(formId).innerHTML += toDoListItem;
         $(document).on('change', "#" + checkboxId + "", function () {
